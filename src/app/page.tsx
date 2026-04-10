@@ -7,15 +7,23 @@ import UploadZone from '@/components/UploadZone';
 interface AudioFile {
   key: string;
   name: string;
+  category: string;
   size: number;
   lastModified: string;
   url: string;
 }
 
+interface Category {
+  name: string;
+  count: number;
+}
+
 export default function Home() {
   const [files, setFiles] = useState<AudioFile[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [showUpload, setShowUpload] = useState(false);
 
   const fetchFiles = async () => {
@@ -24,6 +32,7 @@ export default function Home() {
       const response = await fetch('/api/audio-list');
       const data = await response.json();
       setFiles(data.files || []);
+      setCategories(data.categories || []);
     } catch (error) {
       console.error('Failed to fetch files:', error);
     } finally {
@@ -35,15 +44,27 @@ export default function Home() {
     fetchFiles();
   }, []);
 
-  const filteredFiles = files.filter(file =>
-    file.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredFiles = files.filter(file => {
+    const matchesSearch = file.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = !selectedCategory || file.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return `${bytes} B`;
     if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
+
+  // 按分类分组
+  const groupedFiles = filteredFiles.reduce((acc, file) => {
+    const category = file.category;
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(file);
+    return acc;
+  }, {} as Record<string, AudioFile[]>);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
@@ -95,10 +116,38 @@ export default function Home() {
           </div>
         </div>
 
+        {/* Categories */}
+        <div className="mb-6 flex flex-wrap gap-2">
+          <button
+            onClick={() => setSelectedCategory(null)}
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              selectedCategory === null
+                ? 'bg-blue-500 text-white'
+                : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+            }`}
+          >
+            全部 ({files.length})
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat.name}
+              onClick={() => setSelectedCategory(cat.name)}
+              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                selectedCategory === cat.name
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              {cat.name} ({cat.count})
+            </button>
+          ))}
+        </div>
+
         {/* Stats */}
         <div className="flex items-center gap-4 mb-6 text-sm text-gray-500">
           <span>共 {files.length} 个音频</span>
           {searchQuery && <span>· 搜索到 {filteredFiles.length} 个结果</span>}
+          {selectedCategory && <span>· 分类: {selectedCategory}</span>}
         </div>
 
         {/* Audio List */}
@@ -111,13 +160,24 @@ export default function Home() {
             {searchQuery ? '没有找到匹配的音频' : '暂无音频文件，点击上方按钮上传'}
           </div>
         ) : (
-          <div className="grid gap-3">
-            {filteredFiles.map((file) => (
-              <AudioPlayer
-                key={file.key}
-                src={file.url}
-                title={file.name.replace(/\.(mp3|wav|ogg|m4a)$/i, '')}
-              />
+          <div className="space-y-6">
+            {Object.entries(groupedFiles).map(([category, categoryFiles]) => (
+              <div key={category}>
+                <h2 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  <span className="w-1 h-5 bg-blue-500 rounded-full" />
+                  {category}
+                  <span className="text-sm font-normal text-gray-400">({categoryFiles.length})</span>
+                </h2>
+                <div className="grid gap-3">
+                  {categoryFiles.map((file) => (
+                    <AudioPlayer
+                      key={file.key}
+                      src={file.url}
+                      title={file.name.replace(/\.(mp3|wav|ogg|m4a)$/i, '')}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         )}

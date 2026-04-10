@@ -14,9 +14,15 @@ const BUCKET_NAME = process.env.R2_BUCKET_NAME || 'sound';
 export interface AudioFile {
   key: string;
   name: string;
+  category: string;
   size: number;
   lastModified: Date;
   url: string;
+}
+
+export interface Category {
+  name: string;
+  count: number;
 }
 
 export async function listAudioFiles(): Promise<AudioFile[]> {
@@ -36,18 +42,45 @@ export async function listAudioFiles(): Promise<AudioFile[]> {
         const ext = item.Key?.toLowerCase();
         return ext?.endsWith('.mp3') || ext?.endsWith('.wav') || ext?.endsWith('.ogg') || ext?.endsWith('.m4a');
       })
-      .map(item => ({
-        key: item.Key!,
-        name: item.Key!.split('/').pop() || item.Key!,
-        size: item.Size || 0,
-        lastModified: item.LastModified || new Date(),
-        url: `/api/audio/${encodeURIComponent(item.Key!)}`,
-      }))
-      .sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
+      .map(item => {
+        const key = item.Key!;
+        const parts = key.split('/');
+        const isCategory = parts.length > 1;
+        const category = isCategory ? parts[0] : '其他';
+        const name = parts.pop() || key;
+        
+        return {
+          key,
+          name,
+          category,
+          size: item.Size || 0,
+          lastModified: item.LastModified || new Date(),
+          url: `/api/audio/${encodeURIComponent(key)}`,
+        };
+      })
+      .sort((a, b) => {
+        // 先按分类排序，再按名称排序
+        const categoryCompare = a.category.localeCompare(b.category, 'zh-CN');
+        if (categoryCompare !== 0) return categoryCompare;
+        return a.name.localeCompare(b.name, 'zh-CN');
+      });
   } catch (error) {
     console.error('Error listing audio files:', error);
     return [];
   }
+}
+
+export function getCategories(files: AudioFile[]): Category[] {
+  const categoryMap = new Map<string, number>();
+  
+  files.forEach(file => {
+    const count = categoryMap.get(file.category) || 0;
+    categoryMap.set(file.category, count + 1);
+  });
+  
+  return Array.from(categoryMap.entries())
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'zh-CN'));
 }
 
 export async function getAudioFile(key: string) {
