@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import AudioPlayer from '@/components/AudioPlayer';
 import UploadZone from '@/components/UploadZone';
+import JsonLd from '@/components/JsonLd';
 
 interface AudioFile {
   key: string;
@@ -116,7 +117,9 @@ export default function Home() {
   }, {} as Record<string, AudioFile[]>);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+    <>
+      <JsonLd />
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
       {/* 汽车元素背景 */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* 道路线条 */}
@@ -282,5 +285,6 @@ export default function Home() {
         <p>音频来源于网络，仅供娱乐</p>
       </footer>
     </div>
+    </>
   );
 }
