@@ -187,30 +187,38 @@ export default function Home() {
           {/* Category Navigation */}
           {!loading && categories.length > 0 && (
             <div className="mb-8 flex flex-wrap justify-center gap-3">
-              {categories.map((cat, index) => (
-                <button
-                  key={cat.name}
-                  onClick={() => {
-                    setSelectedCategory(cat.name);
-                    setSearchQuery('');
-                  }}
-                  className={`group relative px-5 py-2.5 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
-                    selectedCategory === cat.name
-                      ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30'
-                      : 'bg-slate-800/60 backdrop-blur text-slate-300 hover:bg-slate-700/60 border border-white/5 hover:border-cyan-500/30'
-                  }`}
-                  style={{ animationDelay: `${index * 50}ms` }}
-                >
-                  <span className="relative z-10">{cat.name}</span>
-                  <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
-                    selectedCategory === cat.name
-                      ? 'bg-white/20'
-                      : 'bg-slate-700/50 text-slate-400'
-                  }`}>
-                    {cat.count}
-                  </span>
-                </button>
-              ))}
+              {(() => {
+                // 将"其他"分类放到最后
+                const sortedCategories = [...categories].sort((a, b) => {
+                  if (a.name === '其他') return 1;
+                  if (b.name === '其他') return -1;
+                  return 0;
+                });
+                return sortedCategories.map((cat, index) => (
+                  <button
+                    key={cat.name}
+                    onClick={() => {
+                      setSelectedCategory(cat.name);
+                      setSearchQuery('');
+                    }}
+                    className={`group relative px-5 py-2.5 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
+                      selectedCategory === cat.name
+                        ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg shadow-cyan-500/30'
+                        : 'bg-slate-800/60 backdrop-blur text-slate-300 hover:bg-slate-700/60 border border-white/5 hover:border-cyan-500/30'
+                    }`}
+                    style={{ animationDelay: `${index * 50}ms` }}
+                  >
+                    <span className="relative z-10">{cat.name}</span>
+                    <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
+                      selectedCategory === cat.name
+                        ? 'bg-white/20'
+                        : 'bg-slate-700/50 text-slate-400'
+                    }`}>
+                      {cat.count}
+                    </span>
+                  </button>
+                ));
+              })()}
             </div>
           )}
 
