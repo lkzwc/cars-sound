@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cars Sound - 特斯拉锁车搞笑段子合集",
-  description: "特斯拉锁车搞笑段子音频合集，在线试听和下载",
+  title: "Cars Sound - 车机声音合集",
+  description: "车机声音合集，在线试听和下载",
 };
 
 export default function RootLayout({
