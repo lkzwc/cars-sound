@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AudioPlayer from '@/components/AudioPlayer';
 import UploadZone from '@/components/UploadZone';
 import JsonLd from '@/components/JsonLd';
@@ -19,17 +19,13 @@ interface Category {
   count: number;
 }
 
-const ITEMS_PER_PAGE = 30;
-
 export default function Home() {
   const [files, setFiles] = useState<AudioFile[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [showUpload, setShowUpload] = useState(false);
-  const [displayCount, setDisplayCount] = useState(ITEMS_PER_PAGE);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const fetchFiles = async () => {
     setLoading(true);
@@ -37,7 +33,12 @@ export default function Home() {
       const response = await fetch('/api/audio-list');
       const data = await response.json();
       setFiles(data.files || []);
-      setCategories(data.categories || []);
+      const cats = data.categories || [];
+      setCategories(cats);
+      // 默认选中第一个分类
+      if (cats.length > 0 && !selectedCategory) {
+        setSelectedCategory(cats[0].name);
+      }
     } catch (error) {
       console.error('Failed to fetch files:', error);
     } finally {
@@ -49,12 +50,8 @@ export default function Home() {
     fetchFiles();
   }, []);
 
-  const filteredFiles = files.filter(file => {
-    return file.name.toLowerCase().includes(searchQuery.toLowerCase());
-  });
-
   // 按分类分组
-  const groupedFiles = filteredFiles.reduce((acc, file) => {
+  const groupedFiles = files.reduce((acc, file) => {
     const category = file.category;
     if (!acc[category]) {
       acc[category] = [];
@@ -63,55 +60,12 @@ export default function Home() {
     return acc;
   }, {} as Record<string, AudioFile[]>);
 
-  // 获取要显示的文件（懒加载）
-  const filesToShow = filteredFiles.slice(0, displayCount);
-  const hasMore = displayCount < filteredFiles.length;
-
-  // 无限滚动
-  const loadMore = useCallback(() => {
-    if (hasMore) {
-      setDisplayCount(prev => prev + ITEMS_PER_PAGE);
-    }
-  }, [hasMore]);
-
-  useEffect(() => {
-    const options = {
-      root: null,
-      rootMargin: '100px',
-      threshold: 0.1,
-    };
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting && hasMore) {
-        loadMore();
-      }
-    }, options);
-
-    if (loadMoreRef.current) {
-      observerRef.current.observe(loadMoreRef.current);
-    }
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [hasMore, loadMore]);
-
-  // 重置分页当筛选条件改变
-  useEffect(() => {
-    setDisplayCount(ITEMS_PER_PAGE);
-  }, [searchQuery]);
-
-  // 重新分组显示的文件
-  const displayedGroupedFiles = filesToShow.reduce((acc, file) => {
-    const category = file.category;
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(file);
-    return acc;
-  }, {} as Record<string, AudioFile[]>);
+  // 获取当前分类的文件
+  const currentCategoryFiles = selectedCategory 
+    ? (groupedFiles[selectedCategory] || []).filter(file => 
+        file.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : [];
 
   return (
     <>
@@ -174,7 +128,7 @@ export default function Home() {
               </svg>
               <input
                 type="text"
-                placeholder="搜索音频..."
+                placeholder="搜索当前分类..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3.5 bg-slate-800/50 border border-slate-700/50 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-slate-200 placeholder-slate-500"
@@ -182,15 +136,36 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Category Navigation */}
+          {!loading && categories.length > 0 && (
+            <div className="mb-6 flex flex-wrap gap-2">
+              {categories.map((cat) => (
+                <button
+                  key={cat.name}
+                  onClick={() => {
+                    setSelectedCategory(cat.name);
+                    setSearchQuery('');
+                  }}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
+                    selectedCategory === cat.name
+                      ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-lg shadow-blue-500/25'
+                      : 'bg-slate-800/50 text-slate-300 hover:bg-slate-700/50 border border-slate-700/50 hover:border-blue-500/50'
+                  }`}
+                >
+                  {cat.name} ({cat.count})
+                </button>
+              ))}
+            </div>
+          )}
+
           {/* Stats */}
           <div className="flex items-center gap-4 mb-6 text-sm text-slate-400">
             <span className="flex items-center gap-1">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
               </svg>
-              共 {files.length} 个音频 · {categories.length} 个分类
+              {selectedCategory ? `${selectedCategory}: ${currentCategoryFiles.length} 个音频` : `共 ${files.length} 个音频 · ${categories.length} 个分类`}
             </span>
-            {searchQuery && <span>· 搜索到 {filteredFiles.length} 个结果</span>}
           </div>
 
           {/* Audio List */}
@@ -199,39 +174,23 @@ export default function Home() {
               <div className="w-16 h-16 border-4 border-slate-600 border-t-blue-500 rounded-full animate-spin mb-4" />
               <p className="text-slate-400">加载中...</p>
             </div>
-          ) : filteredFiles.length === 0 ? (
+          ) : !selectedCategory ? (
             <div className="text-center py-20 text-slate-400">
-              {searchQuery ? '没有找到匹配的音频' : '暂无音频文件，点击上方按钮上传'}
+              请选择一个分类查看音频
+            </div>
+          ) : currentCategoryFiles.length === 0 ? (
+            <div className="text-center py-20 text-slate-400">
+              {searchQuery ? '没有找到匹配的音频' : '该分类暂无音频'}
             </div>
           ) : (
-            <div className="space-y-8">
-              {Object.entries(displayedGroupedFiles).map(([category, categoryFiles]) => (
-                <div key={category}>
-                  <h2 className="text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2">
-                    <span className="w-1.5 h-6 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full" />
-                    {category}
-                    <span className="text-sm font-normal text-slate-500">({categoryFiles.length})</span>
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {categoryFiles.map((file) => (
-                      <AudioPlayer
-                        key={file.key}
-                        src={file.url}
-                        title={file.name.replace(/\.(mp3|wav|ogg|m4a)$/i, '')}
-                      />
-                    ))}
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {currentCategoryFiles.map((file) => (
+                <AudioPlayer
+                  key={file.key}
+                  src={file.url}
+                  title={file.name.replace(/\.(mp3|wav|ogg|m4a)$/i, '')}
+                />
               ))}
-              
-              {hasMore && (
-                <div ref={loadMoreRef} className="flex justify-center py-8">
-                  <div className="flex items-center gap-2 text-slate-400">
-                    <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
-                    <span>加载更多...</span>
-                  </div>
-                </div>
-              )}
             </div>
           )}
         </main>
