@@ -1,4 +1,4 @@
-import { S3Client, ListObjectsV2Command, DeleteObjectsCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -14,45 +14,8 @@ const r2Client = new S3Client({
 const BUCKET_NAME = 'sound';
 const AUDIO_DIR = '/Users/Coding/cars-sound-audio';
 
-async function clearBucket() {
-  console.log('检查 R2 bucket...\n');
-  
-  let deletedCount = 0;
-  let continuationToken: string | undefined = undefined;
-  
-  do {
-    const listCommand = new ListObjectsV2Command({
-      Bucket: BUCKET_NAME,
-      ContinuationToken: continuationToken,
-    });
-    
-    const response = await r2Client.send(listCommand);
-    
-    if (!response.Contents || response.Contents.length === 0) {
-      break;
-    }
-    
-    const deleteCommand = new DeleteObjectsCommand({
-      Bucket: BUCKET_NAME,
-      Delete: {
-        Objects: response.Contents.map(item => ({ Key: item.Key! })),
-        Quiet: true,
-      },
-    });
-    
-    await r2Client.send(deleteCommand);
-    deletedCount += response.Contents.length;
-    console.log(`已删除 ${deletedCount} 个文件...`);
-    
-    continuationToken = response.NextContinuationToken;
-  } while (continuationToken);
-  
-  if (deletedCount > 0) {
-    console.log(`\n✅ 清空完成！共删除 ${deletedCount} 个文件\n`);
-  } else {
-    console.log('Bucket 已为空\n');
-  }
-}
+// 已上传的分类
+const uploadedCategories = ['公主请上车', '其他', '变形金刚语音包'];
 
 function getContentType(filename: string): string {
   const ext = path.extname(filename).toLowerCase();
@@ -74,10 +37,8 @@ async function uploadDirectory(dirPath: string, category: string): Promise<numbe
     const stat = fs.statSync(filePath);
     
     if (stat.isDirectory()) {
-      // 递归上传子目录
       uploadedCount += await uploadDirectory(filePath, `${category}/${file}`);
     } else if (file.match(/\.(mp3|wav|ogg|m4a)$/i)) {
-      // 上传音频文件
       const key = `${category}/${file}`;
       const fileBuffer = fs.readFileSync(filePath);
       
@@ -100,23 +61,22 @@ async function uploadDirectory(dirPath: string, category: string): Promise<numbe
   return uploadedCount;
 }
 
-async function uploadAudioFiles() {
-  console.log('开始上传音频文件...\n');
+async function uploadRemaining() {
+  console.log('继续上传剩余分类...\n');
   
-  // 获取所有分类文件夹
-  const categories = fs.readdirSync(AUDIO_DIR)
+  const allCategories = fs.readdirSync(AUDIO_DIR)
     .filter(name => {
       const stat = fs.statSync(path.join(AUDIO_DIR, name));
       return stat.isDirectory() && !name.startsWith('.');
     });
   
-  console.log(`找到 ${categories.length} 个分类:\n`);
-  categories.forEach(cat => console.log(`  - ${cat}`));
-  console.log('');
+  const remainingCategories = allCategories.filter(cat => !uploadedCategories.includes(cat));
+  
+  console.log(`待上传分类: ${remainingCategories.join(', ')}\n`);
   
   let totalUploaded = 0;
   
-  for (const category of categories) {
+  for (const category of remainingCategories) {
     console.log(`\n📁 上传分类: ${category}`);
     const categoryPath = path.join(AUDIO_DIR, category);
     const count = await uploadDirectory(categoryPath, category);
@@ -127,9 +87,4 @@ async function uploadAudioFiles() {
   console.log(`\n\n✅ 上传完成！共上传 ${totalUploaded} 个文件`);
 }
 
-async function main() {
-  await clearBucket();
-  await uploadAudioFiles();
-}
-
-main().catch(console.error);
+uploadRemaining().catch(console.error);

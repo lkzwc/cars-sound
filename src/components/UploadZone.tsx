@@ -73,15 +73,18 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
   };
 
   return (
-    <div className="mb-8">
+    <div className="relative">
+      {/* 背景光效 */}
+      <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 rounded-3xl blur-xl" />
+      
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all ${
+        className={`relative border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 backdrop-blur-xl ${
           isDragging
-            ? 'border-blue-500 bg-blue-50'
-            : 'border-gray-300 hover:border-gray-400'
+            ? 'border-cyan-400 bg-cyan-500/10 scale-105'
+            : 'border-white/10 bg-slate-800/50 hover:border-cyan-500/30 hover:bg-slate-800/70'
         }`}
       >
         <input
@@ -93,21 +96,36 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
           disabled={uploading}
         />
         
-        <div className="space-y-2">
-          <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
-            <svg className="w-8 h-8 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
+        <div className="space-y-4">
+          <div className="relative w-20 h-20 mx-auto">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 rounded-2xl opacity-20 animate-pulse" />
+            <div className="relative w-full h-full bg-gradient-to-br from-cyan-400 via-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-xl shadow-cyan-500/20">
+              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+            </div>
           </div>
-          <p className="text-gray-600">
-            拖拽音频文件到这里，或 <span className="text-blue-500 font-medium">点击选择</span>
-          </p>
-          <p className="text-xs text-gray-400">支持 MP3, WAV, OGG, M4A 格式</p>
+          
+          <div>
+            <p className="text-white text-lg font-medium">
+              拖拽音频文件到这里
+            </p>
+            <p className="text-slate-400 mt-1">
+              或 <span className="text-cyan-400 font-medium cursor-pointer hover:text-cyan-300">点击选择文件</span>
+            </p>
+          </div>
+          
+          <div className="flex items-center justify-center gap-3 text-xs text-slate-500">
+            <span className="px-3 py-1 bg-slate-700/50 rounded-full">MP3</span>
+            <span className="px-3 py-1 bg-slate-700/50 rounded-full">WAV</span>
+            <span className="px-3 py-1 bg-slate-700/50 rounded-full">OGG</span>
+            <span className="px-3 py-1 bg-slate-700/50 rounded-full">M4A</span>
+          </div>
         </div>
       </div>
 
       {uploadProgress && (
-        <div className="mt-4 p-3 bg-gray-50 rounded-lg text-sm text-gray-700 text-center">
+        <div className="mt-4 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 backdrop-blur border border-cyan-500/20 rounded-xl text-sm text-cyan-300 text-center">
           {uploadProgress}
         </div>
       )}
