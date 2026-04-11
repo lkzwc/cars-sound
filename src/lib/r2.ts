@@ -1,14 +1,24 @@
 import { S3Client, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
 import { CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES, SLUG_TO_CATEGORY, CATEGORIES } from '@/config/categories';
 
-const r2Client = new S3Client({
+// 检查凭证是否可用
+function hasValidCredentials(): boolean {
+  return !!(
+    process.env.R2_ACCOUNT_ID &&
+    process.env.R2_ACCESS_KEY_ID &&
+    process.env.R2_SECRET_ACCESS_KEY
+  );
+}
+
+// 仅在凭证有效时创建客户端
+const r2Client = hasValidCredentials() ? new S3Client({
   region: 'auto',
   endpoint: `https://${process.env.R2_ACCOUNT_ID}.r2.cloudflarestorage.com`,
   credentials: {
     accessKeyId: process.env.R2_ACCESS_KEY_ID!,
     secretAccessKey: process.env.R2_SECRET_ACCESS_KEY!,
   },
-});
+}) : null;
 
 const BUCKET_NAME = process.env.R2_BUCKET_NAME || 'sound';
 
@@ -32,6 +42,12 @@ export interface Category {
 export { CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES, SLUG_TO_CATEGORY };
 
 export async function listAudioFiles(): Promise<AudioFile[]> {
+  // 如果没有R2客户端，返回空数组（用于构建时）
+  if (!r2Client) {
+    console.warn('R2 client not initialized, returning empty file list');
+    return [];
+  }
+  
   try {
     const command = new ListObjectsV2Command({
       Bucket: BUCKET_NAME,
@@ -98,6 +114,11 @@ export function getCategories(files: AudioFile[]): Category[] {
 }
 
 export async function getAudioFile(key: string) {
+  if (!r2Client) {
+    console.error('R2 client not available');
+    return null;
+  }
+  
   try {
     const command = new GetObjectCommand({
       Bucket: BUCKET_NAME,
@@ -118,6 +139,11 @@ export async function getAudioFile(key: string) {
 }
 
 export async function uploadAudioFile(file: File, category: string = '其他'): Promise<boolean> {
+  if (!r2Client) {
+    console.error('R2 client not available');
+    return false;
+  }
+  
   try {
     const fileKey = `${category}/${file.name}`;
     const buffer = await file.arrayBuffer();
