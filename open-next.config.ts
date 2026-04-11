@@ -1,6 +1,12 @@
-// 尝试这种最简洁的写法
-export default {
+const config = {
   default: {
-    // 这里保持默认配置
-  }
+    override: {
+      wrapper: "cloudflare-node",
+      converter: "edge",
+      proxyExternalRequest: "fetch",
+    },
+    edgeExternals: ["node:crypto"],
+  },
 };
+
+export default config;
