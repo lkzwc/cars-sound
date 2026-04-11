@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAudioFile } from '@/lib/r2';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 export const runtime = 'edge';
 
@@ -9,7 +9,7 @@ export async function GET(
   { params }: { params: Promise<{ key: string[] }> }
 ) {
   try {
-    const { env } = getRequestContext();
+    const { env } = await getCloudflareContext();
     const bucket = env?.MY_BUCKET;
     const { key } = await params;
     const fileKey = key.join('/');

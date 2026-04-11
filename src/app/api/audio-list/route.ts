@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import { listAudioFiles, getCategories } from '@/lib/r2';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 export const runtime = 'edge';
 
 export async function GET() {
   try {
-    const { env } = getRequestContext();
+    const { env } = await getCloudflareContext();
     const bucket = env?.MY_BUCKET;
     
     console.log('MY_BUCKET exists:', !!bucket);

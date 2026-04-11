@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadAudioFile } from '@/lib/r2';
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getCloudflareContext } from '@opennextjs/cloudflare';
 
 export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
   try {
-    const { env } = getRequestContext();
+    const { env } = await getCloudflareContext();
     const bucket = env?.MY_BUCKET;
     
     const formData = await request.formData();
