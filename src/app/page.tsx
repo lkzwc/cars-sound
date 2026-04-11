@@ -186,7 +186,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Category Navigation */}
+          {/* Category Navigation - SEO优化：链接到独立分类页面 */}
           {!loading && categories.length > 0 && (
             <div className="mb-8 flex flex-wrap justify-center gap-3">
               {(() => {
@@ -197,12 +197,9 @@ export default function Home() {
                   return 0;
                 });
                 return sortedCategories.map((cat, index) => (
-                  <button
+                  <a
                     key={cat.name}
-                    onClick={() => {
-                      setSelectedCategory(cat.name);
-                      setSearchQuery('');
-                    }}
+                    href={`/category/${encodeURIComponent(cat.name)}`}
                     className={`group relative px-5 py-2.5 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
                       selectedCategory === cat.name
                         ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.5)]'
@@ -218,7 +215,7 @@ export default function Home() {
                     }`}>
                       {cat.count}
                     </span>
-                  </button>
+                  </a>
                 ));
               })()}
             </div>
