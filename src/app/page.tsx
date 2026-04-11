@@ -21,6 +21,25 @@ interface Category {
   count: number;
 }
 
+// 骨架屏组件
+function SkeletonCard() {
+  return (
+    <div className="p-5 bg-slate-800/40 backdrop-blur border border-pink-500/20 rounded-2xl animate-pulse">
+      <div className="h-5 bg-slate-700/50 rounded w-3/4 mb-3"></div>
+      <div className="h-4 bg-slate-700/50 rounded w-1/2 mb-4"></div>
+      <div className="h-10 bg-slate-700/50 rounded"></div>
+    </div>
+  );
+}
+
+function SkeletonCategory() {
+  return (
+    <div className="px-5 py-2.5 bg-slate-800/60 rounded-xl animate-pulse">
+      <div className="h-5 bg-slate-700/50 rounded w-20"></div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [files, setFiles] = useState<AudioFile[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -189,7 +208,13 @@ export default function Home() {
           </div>
 
           {/* Category Navigation - SEO优化：链接到独立分类页面 */}
-          {!loading && categories.length > 0 && (
+          {loading ? (
+            <div className="mb-8 flex flex-wrap justify-center gap-3">
+              {[...Array(8)].map((_, i) => (
+                <SkeletonCategory key={i} />
+              ))}
+            </div>
+          ) : categories.length > 0 ? (
             <div className="mb-8 flex flex-wrap justify-center gap-3">
               {(() => {
                 // 将"其他"分类放到最后
@@ -221,7 +246,7 @@ export default function Home() {
                 ));
               })()}
             </div>
-          )}
+          ) : null}
 
           {/* Stats Bar */}
           {selectedCategory && (
@@ -237,12 +262,10 @@ export default function Home() {
 
           {/* Audio List */}
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-32">
-              <div className="relative">
-                <div className="w-20 h-20 border-4 border-slate-700 border-t-pink-500 rounded-full animate-spin" />
-                <div className="absolute inset-0 w-20 h-20 border-4 border-transparent border-b-cyan-500 rounded-full animate-spin" style={{ animationDirection: 'reverse', animationDuration: '1.5s' }} />
-              </div>
-              <p className="text-pink-400 mt-6 text-lg animate-pulse">加载中...</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {[...Array(8)].map((_, i) => (
+                <SkeletonCard key={i} />
+              ))}
             </div>
           ) : !selectedCategory ? (
             <div className="text-center py-32">
