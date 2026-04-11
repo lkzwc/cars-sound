@@ -1,5 +1,6 @@
-import { defineProxyConfig } from "@opennextjs/cloudflare";
-
-export default defineProxyConfig({
-  // 基础配置，目前保持默认即可
-});
+// 尝试这种最简洁的写法
+export default {
+  default: {
+    // 这里保持默认配置
+  }
+};
