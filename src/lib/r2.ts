@@ -21,25 +21,42 @@ export interface AudioFile {
 }
 
 export interface Category {
-  name: string;
-  displayName: string;  // SEO友好的显示名称
+  slug: string;        // 英文slug，用于URL
+  name: string;        // R2原始分类名（中文）
+  displayName: string; // 中文显示名
   count: number;
 }
 
-// 分类名称映射（原始名称 -> SEO友好名称）
+// 分类名称映射（R2中文文件夹名 -> 英文slug）
+export const CATEGORY_SLUGS: Record<string, string> = {
+  '公主请上车': 'princess',
+  '王子请上车': 'prince',
+  '变形金刚语音包': 'transformers',
+  '贾维斯': 'jarvis',
+  '蛋仔派对': 'eggy-party',
+  '红警语音包': 'red-alert',
+  '大疆音效': 'dji',
+  '复古广告合集': 'retro-ads',
+  '国外动画': 'anime',
+  '角色': 'characters',
+  '游戏': 'games',
+  '其他': 'others',
+};
+
+// 英文slug -> 中文显示名
 export const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
-  '公主请上车': '公主请上车音效',
-  '王子请上车': '王子请上车音效',
-  '变形金刚语音包': '变形金刚语音包',
-  '贾维斯': '贾维斯/钢铁侠语音',
-  '蛋仔派对': '蛋仔派对音效',
-  '红警语音包': '红警语音包',
-  '大疆音效': '大疆音效',
-  '复古广告合集': '复古广告音效',
-  '国外动画': '动漫音效',
-  '角色': '角色语音包',
-  '游戏': '游戏音效',
-  '其他': '精选音效',
+  'princess': '公主请上车音效',
+  'prince': '王子请上车音效',
+  'transformers': '变形金刚语音包',
+  'jarvis': '贾维斯/钢铁侠语音',
+  'eggy-party': '蛋仔派对音效',
+  'red-alert': '红警语音包',
+  'dji': '大疆音效',
+  'retro-ads': '复古广告音效',
+  'anime': '动漫音效',
+  'characters': '角色语音包',
+  'games': '游戏音效',
+  'others': '精选音效',
 };
 
 export async function listAudioFiles(): Promise<AudioFile[]> {
@@ -98,8 +115,9 @@ export function getCategories(files: AudioFile[]): Category[] {
   // 按数量排序，数量多的排前面
   return Array.from(categoryMap.entries())
     .map(([name, count]) => ({ 
-      name, 
-      displayName: CATEGORY_DISPLAY_NAMES[name] || name,
+      slug: CATEGORY_SLUGS[name] || name,  // 转换为英文slug
+      name,
+      displayName: CATEGORY_DISPLAY_NAMES[CATEGORY_SLUGS[name]] || name,
       count 
     }))
     .sort((a, b) => b.count - a.count);

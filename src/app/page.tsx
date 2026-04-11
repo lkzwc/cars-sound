@@ -15,6 +15,7 @@ interface AudioFile {
 }
 
 interface Category {
+  slug: string;
   name: string;
   displayName: string;
   count: number;
@@ -200,7 +201,7 @@ export default function Home() {
                 return sortedCategories.map((cat, index) => (
                   <a
                     key={cat.name}
-                    href={`/category/${encodeURIComponent(cat.name)}`}
+                    href={`/category/${cat.slug}`}
                     className={`group relative px-5 py-2.5 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
                       selectedCategory === cat.name
                         ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.5)]'

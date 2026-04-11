@@ -1,7 +1,12 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { listAudioFiles, getCategories, AudioFile, CATEGORY_DISPLAY_NAMES } from '@/lib/r2';
+import { listAudioFiles, getCategories, AudioFile, CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES } from '@/lib/r2';
 import AudioPlayer from '@/components/AudioPlayer';
+
+// 反向映射：英文slug -> 中文分类名
+const SLUG_TO_CATEGORY: Record<string, string> = Object.fromEntries(
+  Object.entries(CATEGORY_SLUGS).map(([cn, en]) => [en, cn])
+);
 
 // 静态生成所有分类页面
 export async function generateStaticParams() {
@@ -9,7 +14,7 @@ export async function generateStaticParams() {
   const categories = getCategories(files);
   
   return categories.map((cat) => ({
-    slug: encodeURIComponent(cat.name),
+    slug: cat.slug,
   }));
 }
 
@@ -20,54 +25,59 @@ export async function generateMetadata({
   params: Promise<{ slug: string }> 
 }): Promise<Metadata> {
   const { slug } = await params;
-  const categoryName = decodeURIComponent(slug);
-  const displayName = CATEGORY_DISPLAY_NAMES[categoryName] || categoryName;
+  const categoryName = SLUG_TO_CATEGORY[slug];
+  const displayName = CATEGORY_DISPLAY_NAMES[slug] || slug;
+  
+  if (!categoryName) {
+    return {
+      title: '分类不存在 | Cars Sound',
+    };
+  }
   
   const titleMap: Record<string, string> = {
-    '公主请上车': '公主请上车音效下载 - 特斯拉锁车音效 | Cars Sound',
-    '王子请上车': '王子请上车音效下载 - 搞笑车机音效 | Cars Sound',
-    '变形金刚语音包': '变形金刚语音包下载 - 汽车人变形音效 | Cars Sound',
-    '贾维斯': '贾维斯/钢铁侠语音下载 - AI助手音效 | Cars Sound',
-    '蛋仔派对': '蛋仔派对音效下载 - 可爱车机音效 | Cars Sound',
-    '红警语音包': '红警语音包下载 - 经典游戏音效 | Cars Sound',
-    '大疆音效': '大疆音效下载 - 无人机音效 | Cars Sound',
-    '复古广告合集': '复古广告音效下载 - 经典广告音效 | Cars Sound',
-    '国外动画': '动漫音效下载 - 动漫车机音效 | Cars Sound',
-    '角色': '角色语音包下载 - 人物车机音效 | Cars Sound',
-    '游戏': '游戏音效下载 - 王者荣耀/英雄联盟音效 | Cars Sound',
-    '其他': '精选音效下载 - 热门车机音效 | Cars Sound',
+    'princess': '公主请上车音效下载 - 特斯拉锁车音效 | Cars Sound',
+    'prince': '王子请上车音效下载 - 搞笑车机音效 | Cars Sound',
+    'transformers': '变形金刚语音包下载 - 汽车人变形音效 | Cars Sound',
+    'jarvis': '贾维斯/钢铁侠语音下载 - AI助手音效 | Cars Sound',
+    'eggy-party': '蛋仔派对音效下载 - 可爱车机音效 | Cars Sound',
+    'red-alert': '红警语音包下载 - 经典游戏音效 | Cars Sound',
+    'dji': '大疆音效下载 - 无人机音效 | Cars Sound',
+    'retro-ads': '复古广告音效下载 - 经典广告音效 | Cars Sound',
+    'anime': '动漫音效下载 - 动漫车机音效 | Cars Sound',
+    'characters': '角色语音包下载 - 人物车机音效 | Cars Sound',
+    'games': '游戏音效下载 - 王者荣耀/英雄联盟音效 | Cars Sound',
+    'others': '精选音效下载 - 热门车机音效 | Cars Sound',
   };
   
   const descMap: Record<string, string> = {
-    '公主请上车': '公主请上车音效下载，包含多个版本，适用于特斯拉、理想、蔚来、小鹏等车型，一键下载安装教程。',
-    '王子请上车': '王子请上车音效下载，搞笑风格车机音效，让你的乘客会心一笑。',
-    '变形金刚语音包': '变形金刚语音包下载，汽车人变形出发等经典音效，让你的爱车变身变形金刚。',
-    '贾维斯': '贾维斯语音包下载，钢铁侠AI助手音效，科技感十足的车机音效，支持特斯拉等车型。',
-    '蛋仔派对': '蛋仔派对音效下载，可爱风格车机音效，适合年轻车主。',
-    '红警语音包': '红警语音包下载，经典游戏音效，怀旧玩家的最爱。',
-    '大疆音效': '大疆音效下载，无人机经典音效，科技感十足。',
-    '复古广告合集': '复古广告音效下载，经典广告音效，怀旧风格。',
-    '国外动画': '动漫音效下载，国外动画风格车机音效，二次元车主必备。',
-    '角色': '角色语音包下载，各种人物角色音效，个性化你的车机。',
-    '游戏': '游戏音效下载，王者荣耀、英雄联盟等游戏经典音效，游戏玩家必备。',
-    '其他': '精选音效下载，各种风格车机音效任你选择。',
+    'princess': '公主请上车音效下载，包含多个版本，适用于特斯拉、理想、蔚来、小鹏等车型，一键下载安装教程。',
+    'prince': '王子请上车音效下载，搞笑风格车机音效，让你的乘客会心一笑。',
+    'transformers': '变形金刚语音包下载，汽车人变形出发等经典音效，让你的爱车变身变形金刚。',
+    'jarvis': '贾维斯语音包下载，钢铁侠AI助手音效，科技感十足的车机音效，支持特斯拉等车型。',
+    'eggy-party': '蛋仔派对音效下载，可爱风格车机音效，适合年轻车主。',
+    'red-alert': '红警语音包下载，经典游戏音效，怀旧玩家的最爱。',
+    'dji': '大疆音效下载，无人机经典音效，科技感十足。',
+    'retro-ads': '复古广告音效下载，经典广告音效，怀旧风格。',
+    'anime': '动漫音效下载，国外动画风格车机音效，二次元车主必备。',
+    'characters': '角色语音包下载，各种人物角色音效，个性化你的车机。',
+    'games': '游戏音效下载，王者荣耀、英雄联盟等游戏经典音效，游戏玩家必备。',
+    'others': '精选音效下载，各种风格车机音效任你选择。',
   };
   
   return {
-    title: titleMap[categoryName] || `${displayName}下载 | Cars Sound`,
-    description: descMap[categoryName] || `${displayName}下载，精选车机音效，适用于特斯拉、理想、蔚来等车型。`,
+    title: titleMap[slug] || `${displayName}下载 | Cars Sound`,
+    description: descMap[slug] || `${displayName}下载，精选车机音效，适用于特斯拉、理想、蔚来等车型。`,
     keywords: [
-      categoryName,
       displayName,
-      `${categoryName}音效`,
-      `${categoryName}下载`,
+      categoryName,
+      `${displayName}下载`,
       '特斯拉音效',
       '车机音效',
       '锁车音效',
     ],
     openGraph: {
-      title: titleMap[categoryName] || `${displayName}下载 | Cars Sound`,
-      description: descMap[categoryName] || `${displayName}下载，精选车机音效`,
+      title: titleMap[slug] || `${displayName}下载 | Cars Sound`,
+      description: descMap[slug] || `${displayName}下载，精选车机音效`,
       type: 'website',
     },
   };
@@ -79,17 +89,15 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }> 
 }) {
   const { slug } = await params;
-  const categoryName = decodeURIComponent(slug);
-  const displayName = CATEGORY_DISPLAY_NAMES[categoryName] || categoryName;
+  const categoryName = SLUG_TO_CATEGORY[slug];
+  const displayName = CATEGORY_DISPLAY_NAMES[slug] || slug;
+  
+  if (!categoryName) {
+    notFound();
+  }
   
   const files = await listAudioFiles();
   const categories = getCategories(files);
-  
-  // 检查分类是否存在
-  const categoryExists = categories.some(c => c.name === categoryName);
-  if (!categoryExists) {
-    notFound();
-  }
   
   // 筛选当前分类的音效
   const categoryFiles = files.filter(f => f.category === categoryName);
@@ -180,7 +188,7 @@ export default async function CategoryPage({
             .map((cat) => (
               <a
                 key={cat.name}
-                href={`/category/${encodeURIComponent(cat.name)}`}
+                href={`/category/${cat.slug}`}
                 className="px-4 py-2 bg-slate-800/60 backdrop-blur text-slate-300 hover:bg-slate-700/60 border border-pink-500/20 hover:border-pink-500/40 rounded-xl font-medium transition-all duration-300 text-sm"
               >
                 {cat.displayName}

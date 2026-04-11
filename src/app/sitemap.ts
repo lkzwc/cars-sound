@@ -5,7 +5,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://carssound.com'
   
   // 获取所有分类
-  let categories: { name: string; count: number }[] = [];
+  let categories: { slug: string; name: string; displayName: string; count: number }[] = [];
   try {
     const files = await listAudioFiles();
     categories = getCategories(files);
@@ -23,10 +23,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
   
-  // 分类页面
+  // 分类页面（使用英文slug）
   categories.forEach((cat) => {
     routes.push({
-      url: `${baseUrl}/category/${encodeURIComponent(cat.name)}`,
+      url: `${baseUrl}/category/${cat.slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
