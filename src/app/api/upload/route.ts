@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { uploadAudioFile } from '@/lib/r2';
 
-export const runtime = 'edge';
-
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
