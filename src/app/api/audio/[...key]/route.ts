@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAudioFile, setR2Bucket } from '@/lib/r2';
+import { getAudioFile } from '@/lib/r2';
 
 export const runtime = 'edge';
 
@@ -7,17 +7,14 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ key: string[] }> }
 ) {
-  // 获取R2 bucket从环境
   const env = (request as any).env;
-  if (env?.MY_BUCKET) {
-    setR2Bucket(env.MY_BUCKET);
-  }
+  const bucket = env?.MY_BUCKET;
   
   try {
     const { key } = await params;
     const fileKey = key.join('/');
     
-    const audioFile = await getAudioFile(fileKey);
+    const audioFile = await getAudioFile(fileKey, bucket);
     
     if (!audioFile || !audioFile.stream) {
       return NextResponse.json({ error: 'File not found' }, { status: 404 });

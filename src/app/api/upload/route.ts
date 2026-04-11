@@ -1,14 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadAudioFile, setR2Bucket } from '@/lib/r2';
+import { uploadAudioFile } from '@/lib/r2';
 
 export const runtime = 'edge';
 
 export async function POST(request: NextRequest) {
-  // 获取R2 bucket从环境
   const env = (request as any).env;
-  if (env?.MY_BUCKET) {
-    setR2Bucket(env.MY_BUCKET);
-  }
+  const bucket = env?.MY_BUCKET;
   
   try {
     const formData = await request.formData();
@@ -25,7 +22,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
     }
     
-    const success = await uploadAudioFile(file, customKey || file.name);
+    const success = await uploadAudioFile(file, customKey || file.name, bucket);
     
     if (success) {
       return NextResponse.json({ success: true, key: customKey || file.name });
