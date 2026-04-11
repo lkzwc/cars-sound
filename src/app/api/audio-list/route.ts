@@ -5,12 +5,13 @@ export const runtime = 'edge';
 
 export async function GET(
   request: Request,
-  { env }: { env: { MY_BUCKET?: any } }
+  context: { env: Record<string, any> }
 ) {
-  const bucket = env?.MY_BUCKET;
+  // 尝试多种方式获取R2 bucket
+  const bucket = context?.env?.MY_BUCKET || (globalThis as any)?.MY_BUCKET;
   
-  console.log('audio-list env:', JSON.stringify(Object.keys(env || {})));
-  console.log('MY_BUCKET:', bucket ? 'exists' : 'undefined');
+  console.log('Context keys:', Object.keys(context?.env || {}));
+  console.log('Bucket exists:', !!bucket);
   
   try {
     const files = await listAudioFiles(bucket);
