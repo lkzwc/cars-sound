@@ -16,6 +16,7 @@ interface AudioFile {
 
 interface Category {
   name: string;
+  displayName: string;
   count: number;
 }
 
@@ -207,7 +208,7 @@ export default function Home() {
                     }`}
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <span className="relative z-10">{cat.name}</span>
+                    <span className="relative z-10">{cat.displayName}</span>
                     <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
                       selectedCategory === cat.name
                         ? 'bg-white/20'

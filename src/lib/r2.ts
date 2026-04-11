@@ -22,8 +22,25 @@ export interface AudioFile {
 
 export interface Category {
   name: string;
+  displayName: string;  // SEO友好的显示名称
   count: number;
 }
+
+// 分类名称映射（原始名称 -> SEO友好名称）
+export const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
+  '公主请上车': '公主请上车音效',
+  '王子请上车': '王子请上车音效',
+  '变形金刚语音包': '变形金刚语音包',
+  '贾维斯': '贾维斯/钢铁侠语音',
+  '蛋仔派对': '蛋仔派对音效',
+  '红警语音包': '红警语音包',
+  '大疆音效': '大疆音效',
+  '复古广告合集': '复古广告音效',
+  '国外动画': '动漫音效',
+  '角色': '角色语音包',
+  '游戏': '游戏音效',
+  '其他': '精选音效',
+};
 
 export async function listAudioFiles(): Promise<AudioFile[]> {
   try {
@@ -80,7 +97,11 @@ export function getCategories(files: AudioFile[]): Category[] {
   
   // 按数量排序，数量多的排前面
   return Array.from(categoryMap.entries())
-    .map(([name, count]) => ({ name, count }))
+    .map(([name, count]) => ({ 
+      name, 
+      displayName: CATEGORY_DISPLAY_NAMES[name] || name,
+      count 
+    }))
     .sort((a, b) => b.count - a.count);
 }
 
