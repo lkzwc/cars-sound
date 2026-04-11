@@ -261,7 +261,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="relative z-10 text-center py-12 border-t border-pink-500/20 mt-12">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <div className="w-10 h-10 flex items-center justify-center">
+            <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden">
               <img src="/logo.png" alt="CarSound" className="w-full h-full object-contain" />
             </div>
             <span className="text-xl font-bold text-white">

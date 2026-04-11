@@ -47,6 +47,8 @@ export default function RootLayout({
         <meta name="robots" content="index, follow" />
         <meta name="google-adsense-account" content="ca-pub-8701466885719364"></meta>
         <link rel="canonical" href="https://carsound.top" />
+        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
