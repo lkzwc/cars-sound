@@ -3,5 +3,10 @@ compatibility_date = "2024-04-19"
 compatibility_flags = ["nodejs_compat"]
 pages_build_output_dir = ".open-next/worker/.next"
 
+# R2 bucket binding - 用于Workers方式访问R2
+[[r2_buckets]]
+  binding = "MY_BUCKET"
+  bucket_name = "sound"
+
 [vars]
 NEXT_PUBLIC_SITE_URL = "https://carsound.top"
