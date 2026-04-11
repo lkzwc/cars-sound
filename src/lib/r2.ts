@@ -1,4 +1,5 @@
 import { S3Client, ListObjectsV2Command, PutObjectCommand, GetObjectCommand } from '@aws-sdk/client-s3';
+import { CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES, SLUG_TO_CATEGORY, CATEGORIES } from '@/config/categories';
 
 const r2Client = new S3Client({
   region: 'auto',
@@ -27,37 +28,8 @@ export interface Category {
   count: number;
 }
 
-// 分类名称映射（R2中文文件夹名 -> 英文slug）
-export const CATEGORY_SLUGS: Record<string, string> = {
-  '公主请上车': 'princess',
-  '王子请上车': 'prince',
-  '变形金刚语音包': 'transformers',
-  '贾维斯': 'jarvis',
-  '蛋仔派对': 'eggy-party',
-  '红警语音包': 'red-alert',
-  '大疆音效': 'dji',
-  '复古广告合集': 'retro-ads',
-  '国外动画': 'anime',
-  '角色': 'characters',
-  '游戏': 'games',
-  '其他': 'others',
-};
-
-// 英文slug -> 中文显示名
-export const CATEGORY_DISPLAY_NAMES: Record<string, string> = {
-  'princess': '公主请上车音效',
-  'prince': '王子请上车音效',
-  'transformers': '变形金刚语音包',
-  'jarvis': '贾维斯/钢铁侠语音',
-  'eggy-party': '蛋仔派对音效',
-  'red-alert': '红警语音包',
-  'dji': '大疆音效',
-  'retro-ads': '复古广告音效',
-  'anime': '动漫音效',
-  'characters': '角色语音包',
-  'games': '游戏音效',
-  'others': '精选音效',
-};
+// 导出映射表（从配置文件）
+export { CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES, SLUG_TO_CATEGORY };
 
 export async function listAudioFiles(): Promise<AudioFile[]> {
   try {
@@ -107,20 +79,22 @@ export async function listAudioFiles(): Promise<AudioFile[]> {
 export function getCategories(files: AudioFile[]): Category[] {
   const categoryMap = new Map<string, number>();
   
+  // 统计R2中实际存在的分类
   files.forEach(file => {
     const count = categoryMap.get(file.category) || 0;
     categoryMap.set(file.category, count + 1);
   });
   
+  // 合并配置文件中的所有分类（包括没有音频的）
+  const allCategories = CATEGORIES.map(config => ({
+    slug: config.slug,
+    name: config.name,
+    displayName: config.displayName,
+    count: categoryMap.get(config.name) || 0,  // 如果没有音频，count为0
+  }));
+  
   // 按数量排序，数量多的排前面
-  return Array.from(categoryMap.entries())
-    .map(([name, count]) => ({ 
-      slug: CATEGORY_SLUGS[name] || name,  // 转换为英文slug
-      name,
-      displayName: CATEGORY_DISPLAY_NAMES[CATEGORY_SLUGS[name]] || name,
-      count 
-    }))
-    .sort((a, b) => b.count - a.count);
+  return allCategories.sort((a, b) => b.count - a.count);
 }
 
 export async function getAudioFile(key: string) {
