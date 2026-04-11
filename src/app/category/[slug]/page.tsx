@@ -99,16 +99,6 @@ export default async function CategoryPage({
       </div>
 
       <main className="max-w-7xl mx-auto px-4 py-8 relative z-10">
-        {/* 面包屑导航 */}
-        <div className="mb-6">
-          <a href="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-pink-400 transition-colors">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            返回首页
-          </a>
-        </div>
-
         {/* 分类标题 */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-sm mb-4">
