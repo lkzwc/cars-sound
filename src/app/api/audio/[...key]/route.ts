@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getAudioFile } from '@/lib/r2';
+import { getAudioFile, setR2Bucket } from '@/lib/r2';
 
 export const runtime = 'edge';
 
@@ -7,6 +7,12 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ key: string[] }> }
 ) {
+  // 获取R2 bucket从环境
+  const env = (request as any).env;
+  if (env?.MY_BUCKET) {
+    setR2Bucket(env.MY_BUCKET);
+  }
+  
   try {
     const { key } = await params;
     const fileKey = key.join('/');
@@ -19,7 +25,7 @@ export async function GET(
     
     const arrayBuffer = await audioFile.stream.transformToByteArray();
     
-    return new NextResponse(arrayBuffer, {
+    return new Response(arrayBuffer, {
       headers: {
         'Content-Type': audioFile.contentType,
         'Content-Length': String(audioFile.contentLength || arrayBuffer.byteLength),

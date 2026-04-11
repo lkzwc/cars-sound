@@ -1,9 +1,15 @@
 import { NextResponse } from 'next/server';
-import { listAudioFiles, getCategories } from '@/lib/r2';
+import { listAudioFiles, getCategories, setR2Bucket } from '@/lib/r2';
 
 export const runtime = 'edge';
 
-export async function GET() {
+export async function GET(request: Request) {
+  // 获取R2 bucket从环境
+  const env = (request as any).env;
+  if (env?.MY_BUCKET) {
+    setR2Bucket(env.MY_BUCKET);
+  }
+  
   try {
     const files = await listAudioFiles();
     const categories = getCategories(files);
