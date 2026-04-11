@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { listAudioFiles, getCategories } from '@/lib/r2';
 
+export const runtime = 'edge';
+
 export async function GET() {
   try {
     const files = await listAudioFiles();
