@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAudioFile } from '@/lib/r2';
+import { getRequestContext } from '@cloudflare/next-on-pages';
 
 export const runtime = 'edge';
 
@@ -7,10 +8,9 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ key: string[] }> }
 ) {
-  const env = (request as any).env;
-  const bucket = env?.MY_BUCKET;
-  
   try {
+    const { env } = getRequestContext();
+    const bucket = env?.MY_BUCKET;
     const { key } = await params;
     const fileKey = key.join('/');
     
