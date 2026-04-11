@@ -170,8 +170,8 @@ export default async function CategoryPage({
       {/* Footer */}
       <footer className="relative z-10 text-center py-12 border-t border-pink-500/20 mt-12">
         <div className="flex items-center justify-center gap-3 mb-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.4)] overflow-hidden">
-            <img src="/logo.png" alt="CarSound" className="w-full h-full object-cover" />
+          <div className="w-10 h-10 flex items-center justify-center">
+            <img src="/logo.png" alt="CarSound" className="w-full h-full object-contain" />
           </div>
           <span className="text-xl font-bold text-white">
             CarSound
