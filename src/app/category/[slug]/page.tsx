@@ -98,52 +98,28 @@ export default async function CategoryPage({
         }} />
       </div>
 
-      {/* Header */}
-      <header className="bg-gray-900/60 backdrop-blur-xl border-b border-pink-500/20 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <a href="/" className="flex items-center gap-4 group">
-              <div className="w-16 h-16 bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(236,72,153,0.4)] transform group-hover:scale-105 transition-transform duration-300">
-                <svg className="w-9 h-9 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
-              </div>
-              
-              <div>
-                <h1 className="text-3xl font-black bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent tracking-tight">
-                  Cars Sound
-                </h1>
-                <p className="text-sm text-slate-400 font-medium">车机魔改音效平台</p>
-              </div>
-            </a>
-            
-            <a 
-              href="/"
-              className="px-5 py-2.5 bg-slate-800/60 backdrop-blur text-slate-300 hover:bg-slate-700/60 border border-pink-500/20 hover:border-pink-500/40 rounded-xl font-medium transition-all duration-300 flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              返回首页
-            </a>
-          </div>
-        </div>
-      </header>
-
       <main className="max-w-7xl mx-auto px-4 py-8 relative z-10">
+        {/* 面包屑导航 */}
+        <div className="mb-6">
+          <a href="/" className="inline-flex items-center gap-2 text-slate-400 hover:text-pink-400 transition-colors">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            返回首页
+          </a>
+        </div>
+
         {/* 分类标题 */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-sm mb-4">
             <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" />
             分类音效
           </div>
-          <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
             <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
               {displayName}
             </span>
-          </h2>
+          </h1>
           <p className="text-slate-400 text-lg">
             共 {categoryFiles.length} 个音效，适用于特斯拉、理想、蔚来、小鹏等车型
           </p>
