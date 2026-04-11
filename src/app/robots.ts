@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/',
     },
-    sitemap: 'https://carssound.com/sitemap.xml',
+    sitemap: 'https://carsound.top/sitemap.xml',
   }
 }

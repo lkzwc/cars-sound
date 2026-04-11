@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 import { listAudioFiles, getCategories } from '@/lib/r2';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://carssound.com'
+  const baseUrl = 'https://carsound.top'
   
   // 获取所有分类
   let categories: { slug: string; name: string; displayName: string; count: number }[] = [];

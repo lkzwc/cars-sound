@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '车载音乐 - 精选歌单推荐 | Cars Sound',
-  description: '精选车载音乐歌单，适合驾驶时聆听的音乐推荐。包含流行、摇滚、电子等多种风格。',
+  title: '车载音乐 - 精选歌单推荐 | CarSound',
+  description: 'CarSound精选车载音乐歌单，适合驾驶时聆听的音乐推荐。包含流行、摇滚、电子等多种风格。',
 };
 
 export default function MusicPage() {

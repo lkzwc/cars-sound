@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '语音包定制 - 专属车机音效 | Cars Sound',
-  description: '定制专属车机语音包，个性化你的爱车。支持特斯拉、理想、蔚来等品牌，专业配音团队，快速交付。',
+  title: '语音包定制 - 专属车机音效 | CarSound',
+  description: 'CarSound定制专属车机语音包，个性化你的爱车。支持特斯拉、理想、蔚来等品牌，专业配音团队，快速交付。',
 };
 
 export default function CustomPage() {

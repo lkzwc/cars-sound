@@ -170,19 +170,15 @@ export default async function CategoryPage({
       {/* Footer */}
       <footer className="relative z-10 text-center py-12 border-t border-pink-500/20 mt-12">
         <div className="flex items-center justify-center gap-3 mb-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.4)]">
-            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M12 2L2 7l10 5 10-5-10-5z" />
-              <path d="M2 17l10 5 10-5" />
-              <path d="M2 12l10 5 10-5" />
-            </svg>
+          <div className="w-10 h-10 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_15px_rgba(236,72,153,0.4)] overflow-hidden">
+            <img src="/logo.png" alt="CarSound" className="w-full h-full object-cover" />
           </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-pink-400 to-cyan-400 bg-clip-text text-transparent">
-            Cars Sound
+          <span className="text-xl font-bold text-white">
+            CarSound
           </span>
         </div>
         <p className="text-slate-500 text-sm">音频来源于网络，仅供娱乐</p>
-        <p className="text-slate-600 text-xs mt-2">© 2026 Cars Sound. All rights reserved.</p>
+        <p className="text-slate-600 text-xs mt-2">© 2026 CarSound. All rights reserved.</p>
       </footer>
     </div>
   );
