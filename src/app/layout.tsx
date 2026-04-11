@@ -45,6 +45,7 @@ export default function RootLayout({
     <html lang="zh-CN" suppressHydrationWarning>
       <head>
         <meta name="robots" content="index, follow" />
+        <meta name="google-adsense-account" content="ca-pub-8701466885719364"></meta>
         <link rel="canonical" href="https://carssound.com" />
       </head>
       <body
