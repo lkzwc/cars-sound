@@ -1,0 +1,7 @@
+name = "cars-sound"
+compatibility_date = "2024-04-19"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".open-next/worker/.next"
+
+[vars]
+NEXT_PUBLIC_SITE_URL = "https://carsound.top"
