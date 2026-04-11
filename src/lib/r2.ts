@@ -1,16 +1,14 @@
 import { CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES, SLUG_TO_CATEGORY, CATEGORIES } from '@/config/categories';
 
-// R2 Bucket类型
+// R2 Bucket类型 - 简化版
 interface R2Bucket {
-  list(options?: { prefix?: string; delimiter?: string; cursor?: string; limit?: number }): Promise<{
+  list(options?: { prefix?: string }): Promise<{
     objects: Array<{
       key: string;
       size: number;
       uploaded: Date;
       httpMetadata?: { contentType?: string };
     }>;
-    truncated: boolean;
-    cursor?: string;
   }>;
   get(key: string): Promise<{
     body: ReadableStream;
@@ -41,14 +39,19 @@ export { CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES, SLUG_TO_CATEGORY };
 
 export async function listAudioFiles(bucket?: R2Bucket | null): Promise<AudioFile[]> {
   if (!bucket) {
-    console.warn('R2 bucket not available, returning empty list');
+    console.warn('listAudioFiles: bucket is null/undefined');
+    console.warn('globalThis keys:', Object.keys(globalThis).filter(k => k.includes('BUCKET') || k.includes('R2')));
     return [];
   }
+  
+  console.log('listAudioFiles: bucket found, calling list()');
   
   try {
     const objects = await bucket.list({
       prefix: '',
     });
+    
+    console.log('listAudioFiles: found', objects.objects.length, 'objects');
     
     const files: AudioFile[] = [];
     
