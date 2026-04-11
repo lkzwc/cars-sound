@@ -129,45 +129,6 @@ export default function Home() {
           <div className="absolute bottom-1/4 left-1/4 w-2 h-2 bg-purple-400 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '1s' }} />
         </div>
 
-        {/* Header */}
-        <header className="bg-gray-900/60 backdrop-blur-xl border-b border-pink-500/20 sticky top-0 z-50">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                {/* Logo */}
-                <div className="relative group">
-                  <div className="w-16 h-16 bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-[0_0_30px_rgba(236,72,153,0.4)] transform group-hover:scale-105 transition-transform duration-300">
-                    <svg className="w-9 h-9 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                      <path d="M2 17l10 5 10-5" />
-                      <path d="M2 12l10 5 10-5" />
-                    </svg>
-                  </div>
-                  <div className="absolute -inset-1 bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-2xl blur opacity-40 group-hover:opacity-60 transition-opacity" />
-                </div>
-                
-                <div>
-                  <h1 className="text-3xl font-black bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent tracking-tight">
-                    Cars Sound
-                  </h1>
-                  <p className="text-sm text-slate-400 font-medium">车机魔改音效平台</p>
-                </div>
-              </div>
-              
-              <button
-                onClick={() => setShowUpload(!showUpload)}
-                className="group relative px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-semibold shadow-[0_0_20px_rgba(236,72,153,0.4)] hover:shadow-[0_0_30px_rgba(236,72,153,0.6)] hover:scale-105 transition-all duration-300 flex items-center gap-2 overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-pink-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
-                <svg className="w-5 h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                </svg>
-                <span className="relative z-10">上传音效</span>
-              </button>
-            </div>
-          </div>
-        </header>
-
         <main className="max-w-7xl mx-auto px-4 py-8 relative z-10">
           {/* Upload Zone */}
           {showUpload && (
