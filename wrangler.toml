@@ -1,7 +1,0 @@
-name = "cars-sound"
-compatibility_date = "2024-04-19"
-pages_build_output_dir = ".open-next/worker/.next"
-
-[[r2_buckets]]
-  binding = "MY_BUCKET"
-  bucket_name = "sound"
