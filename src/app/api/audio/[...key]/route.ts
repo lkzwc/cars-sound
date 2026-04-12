@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAudioFile } from '@/lib/r2';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
-
 export const runtime = 'edge';
+export const dynamic = 'force-dynamic';
 
 export async function GET(
   request: NextRequest,
