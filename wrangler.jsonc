@@ -1,38 +1,15 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
-	"main": ".open-next/worker.js",
 	"name": "cars-sound",
-	"compatibility_date": "2026-04-12",
+	"compatibility_date": "2024-11-01", // 建议用回稳定日期
 	"compatibility_flags": [
-		"nodejs_compat",
-		"global_fetch_strictly_public"
+		"nodejs_compat"
 	],
-	"assets": {
-		"directory": ".open-next/assets",
-		"binding": "ASSETS"
-	},
-	"services": [
-		{
-			// Self-reference service binding, the service name must match the worker name
-			// see https://opennext.js.org/cloudflare/caching
-			"binding": "WORKER_SELF_REFERENCE",
-			"service": "cars-sound"
-		}
-	],
+	"pages_build_output_dir": ".open-next",
 	"r2_buckets": [
-		// Use R2 incremental cache
-		// See https://opennext.js.org/cloudflare/caching
 		{
 			"binding": "MY_BUCKET",
-			// Create the bucket before deploying
-			// You can change the bucket name if you want
 			"bucket_name": "sound"
 		}
-	],
-	"pages_build_output_dir": ".open-next" ,
-	"images": {
-		// Enable image optimization
-		// see https://opennext.js.org/cloudflare/howtos/image
-		"binding": "IMAGES"
-	}
+	]
 }
