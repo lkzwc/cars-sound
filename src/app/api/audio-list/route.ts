@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { listAudioFiles, getCategories } from '@/lib/r2';
 import { getCloudflareContext } from '@opennextjs/cloudflare';
 
-export const runtime = 'edge';
+
 
 export async function GET() {
   try {
