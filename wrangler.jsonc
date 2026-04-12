@@ -1,9 +1,9 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "cars-sound",
-	"compatibility_date": "2024-11-01", // 建议用回稳定日期
+	"compatibility_date": "2024-11-01",
 	"compatibility_flags": [
-		"nodejs_compat",
+		"nodejs_compat"
 	],
 	"pages_build_output_dir": ".open-next",
 	"r2_buckets": [
