@@ -29,6 +29,7 @@
 			"bucket_name": "sound"
 		}
 	],
+	"pages_build_output_dir": ".open-next" ,
 	"images": {
 		// Enable image optimization
 		// see https://opennext.js.org/cloudflare/howtos/image
