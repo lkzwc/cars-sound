@@ -25,7 +25,7 @@ export default function CustomPage() {
               专属语音包
             </span>
             <br />
-            <span className="text-white>定制</span>
+            <span className="text-white">定制</span>
           </h1>
           
           <p className="text-xl text-slate-300 mb-10 max-w-2xl mx-auto">
