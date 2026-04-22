@@ -20,7 +20,8 @@ export async function GET(
       return NextResponse.json({ error: 'File not found' }, { status: 404 });
     }
     
-    const arrayBuffer = await audioFile.stream.transformToByteArray();
+    // R2 body 是 ReadableStream，使用 Response 转换为 ArrayBuffer（Edge Runtime 兼容）
+    const arrayBuffer = await new Response(audioFile.stream).arrayBuffer();
     
     return new Response(arrayBuffer, {
       headers: {
