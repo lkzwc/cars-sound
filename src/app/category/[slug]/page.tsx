@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import AudioPlayer from '@/components/AudioPlayer';
+import { SLUG_TO_CATEGORY, CATEGORY_DISPLAY_NAMES } from '@/lib/r2';
 
 interface AudioFile {
   key: string;
@@ -42,11 +43,14 @@ export default function CategoryPage() {
   const params = useParams();
   const slug = params.slug as string;
   
+  // 从配置直接获取分类名，不用等 API 返回
+  const categoryName = SLUG_TO_CATEGORY[slug] || '';
+  const displayName = CATEGORY_DISPLAY_NAMES[slug] || slug;
+  
   const [files, setFiles] = useState<AudioFile[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [displayName, setDisplayName] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,17 +59,8 @@ export default function CategoryPage() {
       try {
         const response = await fetch('/api/audio-list');
         const data = await response.json();
-        const allFiles = data.files || [];
-        const allCategories = data.categories || [];
-        
-        setFiles(allFiles);
-        setCategories(allCategories);
-        
-        // 找到当前分类
-        const currentCat = allCategories.find((c: Category) => c.slug === slug);
-        if (currentCat) {
-          setDisplayName(currentCat.displayName);
-        }
+        setFiles(data.files || []);
+        setCategories(data.categories || []);
       } catch (error) {
         console.error('Failed to fetch:', error);
       } finally {
@@ -73,14 +68,8 @@ export default function CategoryPage() {
       }
     };
     
-    if (slug) {
-      fetchData();
-    }
-  }, [slug]);
-
-  // 找到当前分类名
-  const currentCategory = categories.find(c => c.slug === slug);
-  const categoryName = currentCategory?.name || '';
+    fetchData();
+  }, []);
   
   // 筛选当前分类的音效
   const categoryFiles = files.filter(f => f.category === categoryName);
@@ -90,7 +79,7 @@ export default function CategoryPage() {
   const paginatedFiles = categoryFiles.slice(0, page * ITEMS_PER_PAGE);
   const hasMore = page < totalPages;
 
-  if (!loading && !currentCategory) {
+  if (!loading && !categoryName) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 flex items-center justify-center">
         <div className="text-center">
