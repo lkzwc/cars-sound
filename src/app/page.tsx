@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import AudioPlayer from '@/components/AudioPlayer';
 import UploadZone from '@/components/UploadZone';
 import JsonLd from '@/components/JsonLd';
 
@@ -21,69 +20,38 @@ interface Category {
   count: number;
 }
 
-// 骨架屏组件
-function SkeletonCard() {
+// 分类卡片骨架屏
+function SkeletonCategory() {
   return (
-    <div className="p-5 bg-slate-800/40 backdrop-blur border border-pink-500/20 rounded-2xl animate-pulse">
-      <div className="h-5 bg-slate-700/50 rounded w-3/4 mb-3"></div>
-      <div className="h-4 bg-slate-700/50 rounded w-1/2 mb-4"></div>
+    <div className="p-6 bg-slate-800/40 backdrop-blur border border-pink-500/20 rounded-2xl animate-pulse">
+      <div className="h-6 bg-slate-700/50 rounded w-1/2 mb-3"></div>
+      <div className="h-4 bg-slate-700/50 rounded w-1/3 mb-4"></div>
       <div className="h-10 bg-slate-700/50 rounded"></div>
     </div>
   );
 }
 
-function SkeletonCategory() {
-  return (
-    <div className="px-5 py-2.5 bg-slate-800/60 rounded-xl animate-pulse">
-      <div className="h-5 bg-slate-700/50 rounded w-20"></div>
-    </div>
-  );
-}
-
 export default function Home() {
-  const [files, setFiles] = useState<AudioFile[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [totalFiles, setTotalFiles] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
   const [showUpload, setShowUpload] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
-  const fetchFiles = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch('/api/audio-list');
-      const data = await response.json();
-      setFiles(data.files || []);
-      const cats = data.categories || [];
-      setCategories(cats);
-      if (cats.length > 0 && !selectedCategory) {
-        setSelectedCategory(cats[0].name);
-      }
-    } catch (error) {
-      console.error('Failed to fetch files:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    fetchFiles();
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch('/api/audio-list');
+        const data = await response.json();
+        setCategories(data.categories || []);
+        setTotalFiles((data.files || []).length);
+      } catch (error) {
+        console.error('Failed to fetch:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCategories();
   }, []);
-
-  const groupedFiles = files.reduce((acc, file) => {
-    const category = file.category;
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(file);
-    return acc;
-  }, {} as Record<string, AudioFile[]>);
-
-  const currentCategoryFiles = selectedCategory 
-    ? (groupedFiles[selectedCategory] || []).filter(file => 
-        file.name.toLowerCase().includes(searchQuery.toLowerCase())
-      )
-    : [];
 
   return (
     <>
@@ -91,7 +59,6 @@ export default function Home() {
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 relative overflow-hidden">
         {/* 赛博朋克动态背景 */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          {/* 霓虹光晕 */}
           <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-pink-500/30 rounded-full blur-[120px] animate-pulse" />
           <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/30 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/20 rounded-full blur-[150px]" />
@@ -100,11 +67,6 @@ export default function Home() {
           <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-pink-500 to-transparent opacity-60 animate-pulse" />
           <div className="absolute top-2/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-60 animate-pulse" style={{ animationDelay: '0.3s' }} />
           <div className="absolute top-3/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-60 animate-pulse" style={{ animationDelay: '0.6s' }} />
-          
-          {/* 垂直霓虹线 */}
-          <div className="absolute left-1/4 top-0 w-0.5 h-full bg-gradient-to-b from-transparent via-pink-500/40 to-transparent" />
-          <div className="absolute left-2/4 top-0 w-0.5 h-full bg-gradient-to-b from-transparent via-cyan-500/40 to-transparent" />
-          <div className="absolute left-3/4 top-0 w-0.5 h-full bg-gradient-to-b from-transparent via-purple-500/40 to-transparent" />
           
           {/* 赛博朋克网格 */}
           <div className="absolute inset-0 opacity-20" style={{
@@ -116,144 +78,86 @@ export default function Home() {
             transform: 'perspective(500px) rotateX(60deg)',
             transformOrigin: 'center top'
           }} />
-          
-          {/* 装饰霓虹圆环 */}
-          <div className="absolute top-10 right-10 w-40 h-40 border-2 border-pink-500/30 rounded-full animate-spin" style={{ animationDuration: '15s' }} />
-          <div className="absolute top-10 right-10 w-52 h-52 border border-cyan-500/20 rounded-full animate-spin" style={{ animationDuration: '20s', animationDirection: 'reverse' }} />
-          <div className="absolute bottom-10 left-10 w-60 h-60 border-2 border-purple-500/30 rounded-full animate-spin" style={{ animationDuration: '25s' }} />
-          <div className="absolute bottom-10 left-10 w-72 h-72 border border-pink-500/20 rounded-full animate-spin" style={{ animationDuration: '30s', animationDirection: 'reverse' }} />
-          
-          {/* 闪烁霓虹点 */}
-          <div className="absolute top-1/4 left-1/6 w-2 h-2 bg-pink-400 rounded-full animate-ping" style={{ animationDuration: '2s' }} />
-          <div className="absolute top-1/3 right-1/5 w-2 h-2 bg-cyan-400 rounded-full animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
-          <div className="absolute bottom-1/4 left-1/4 w-2 h-2 bg-purple-400 rounded-full animate-ping" style={{ animationDuration: '3s', animationDelay: '1s' }} />
         </div>
 
         <main className="max-w-7xl mx-auto px-4 py-8 relative z-10">
           {/* Upload Zone */}
           {showUpload && (
             <div className="mb-8 animate-fadeIn">
-              <UploadZone onUploadSuccess={fetchFiles} />
+              <UploadZone onUploadSuccess={() => setShowUpload(false)} />
             </div>
           )}
 
           {/* Hero Section */}
-          <div className="text-center mb-10">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+          <div className="text-center mb-12">
+            <h1 className="text-5xl md:text-6xl font-black text-white mb-6">
               <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
-                发现你的车机声音
+                CarSound
               </span>
-            </h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              精选 {files.length} 个车机音效，涵盖 {categories.length} 个分类，让你的爱车独一无二
+            </h1>
+            <p className="text-slate-400 text-xl max-w-2xl mx-auto mb-8">
+              精选 {totalFiles} 个车机音效，涵盖 {categories.length} 个分类，让你的爱车独一无二
             </p>
+            <button
+              onClick={() => setShowUpload(!showUpload)}
+              className="px-8 py-3 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-full font-semibold hover:shadow-[0_0_30px_rgba(236,72,153,0.5)] transition-all duration-300 hover:scale-105"
+            >
+              {showUpload ? '关闭上传' : '上传音效'}
+            </button>
           </div>
 
-          {/* Search */}
-          <div className="mb-8">
-            <div className="relative max-w-2xl mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 via-purple-500/20 to-cyan-500/20 rounded-2xl blur-xl" />
-              <div className="relative">
-                <svg className="absolute left-5 top-1/2 -translate-y-1/2 w-6 h-6 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input
-                  type="text"
-                  placeholder="搜索音效..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-14 pr-6 py-4 bg-slate-800/80 backdrop-blur border border-pink-500/20 rounded-2xl focus:outline-none focus:ring-2 focus:ring-pink-500/50 focus:border-pink-500/50 text-white placeholder-slate-500 text-lg shadow-[0_0_20px_rgba(236,72,153,0.1)]"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Category Navigation - SEO优化：链接到独立分类页面 */}
+          {/* 分类网格 */}
           {loading ? (
-            <div className="mb-8 flex flex-wrap justify-center gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, i) => (
                 <SkeletonCategory key={i} />
               ))}
             </div>
-          ) : categories.length > 0 ? (
-            <div className="mb-8 flex flex-wrap justify-center gap-3">
-              {(() => {
-                // 将"其他"分类放到最后
-                const sortedCategories = [...categories].sort((a, b) => {
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {categories
+                .sort((a, b) => {
                   if (a.name === '其他') return 1;
                   if (b.name === '其他') return -1;
-                  return 0;
-                });
-                return sortedCategories.map((cat, index) => (
+                  return b.count - a.count;
+                })
+                .map((cat, index) => (
                   <a
-                    key={cat.name}
+                    key={cat.slug}
                     href={`/category/${cat.slug}`}
-                    className={`group relative px-5 py-2.5 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 ${
-                      selectedCategory === cat.name
-                        ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.5)]'
-                        : 'bg-slate-800/60 backdrop-blur text-slate-300 hover:bg-slate-700/60 border border-pink-500/20 hover:border-pink-500/40'
-                    }`}
+                    className="group relative p-6 bg-slate-800/60 backdrop-blur border border-pink-500/20 rounded-2xl hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all duration-300 hover:scale-105"
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
-                    <span className="relative z-10">{cat.displayName}</span>
-                    <span className={`ml-2 text-xs px-2 py-0.5 rounded-full ${
-                      selectedCategory === cat.name
-                        ? 'bg-white/20'
-                        : 'bg-slate-700/50 text-slate-400'
-                    }`}>
-                      {cat.count}
-                    </span>
+                    {/* 霓虹光效 */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-pink-500/0 via-cyan-500/0 to-purple-500/0 group-hover:from-pink-500/10 group-hover:via-cyan-500/5 group-hover:to-purple-500/10 transition-all duration-500 rounded-2xl" />
+                    
+                    <div className="relative">
+                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">
+                        {cat.displayName}
+                      </h3>
+                      <p className="text-slate-400 text-sm mb-4">
+                        {cat.count} 个音效
+                      </p>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-slate-500">
+                          点击查看
+                        </span>
+                        <svg className="w-5 h-5 text-pink-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
+                    </div>
                   </a>
-                ));
-              })()}
-            </div>
-          ) : null}
-
-          {/* Stats Bar */}
-          {selectedCategory && (
-            <div className="mb-6 flex items-center justify-center gap-6 text-sm text-slate-400">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                <span>{selectedCategory}</span>
-              </div>
-              <span>·</span>
-              <span>{currentCategoryFiles.length} 个音效</span>
+                ))}
             </div>
           )}
 
-          {/* Audio List */}
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {[...Array(8)].map((_, i) => (
-                <SkeletonCard key={i} />
-              ))}
-            </div>
-          ) : !selectedCategory ? (
-            <div className="text-center py-32">
-              <div className="text-6xl mb-4">🎵</div>
-              <p className="text-slate-400 text-lg">请选择一个分类查看音效</p>
-            </div>
-          ) : currentCategoryFiles.length === 0 ? (
-            <div className="text-center py-32">
-              <div className="text-6xl mb-4">🔍</div>
-              <p className="text-slate-400 text-lg">
-                {searchQuery ? '没有找到匹配的音效' : '该分类暂无音效'}
+          {/* 提示 */}
+          {!loading && categories.length > 0 && (
+            <div className="mt-12 text-center">
+              <p className="text-slate-500 text-sm">
+                点击分类查看并播放音效，支持在线试听和下载
               </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {currentCategoryFiles.map((file, index) => (
-                <div
-                  key={file.key}
-                  className="transform hover:scale-105 transition-transform duration-300"
-                  style={{ animationDelay: `${index * 30}ms` }}
-                >
-                  <AudioPlayer
-                    src={file.url}
-                    title={file.name.replace(/\.(mp3|wav|ogg|m4a)$/i, '')}
-                  />
-                </div>
-              ))}
             </div>
           )}
         </main>

@@ -1,20 +1,42 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 interface AudioPlayerProps {
   src: string;
   title: string;
 }
 
+// 懒加载音频播放器 - 只有进入视口才加载 audio 元素
 export default function AudioPlayer({ src, title }: AudioPlayerProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
+
+  // IntersectionObserver 懒加载
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '100px', threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const togglePlay = async () => {
     if (audioRef.current) {
@@ -96,7 +118,10 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   };
 
   return (
-    <div className="group relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl rounded-xl border border-pink-500/20 p-3 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all duration-300 overflow-hidden">
+    <div 
+      ref={containerRef}
+      className="group relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl rounded-xl border border-pink-500/20 p-3 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all duration-300 overflow-hidden"
+    >
       {/* 霓虹光效 */}
       <div className="absolute inset-0 bg-gradient-to-br from-pink-500/0 via-cyan-500/0 to-purple-500/0 group-hover:from-pink-500/10 group-hover:via-cyan-500/5 group-hover:to-purple-500/10 transition-all duration-500" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -105,14 +130,18 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
       <div className="relative flex items-center gap-3 mb-3">
         <button
           onClick={togglePlay}
-          disabled={error}
+          disabled={error || !isVisible}
           className={`relative w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-full text-white transition-all duration-300 ${
-            error 
+            error || !isVisible
               ? 'bg-slate-700/50 cursor-not-allowed' 
               : 'bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 hover:shadow-[0_0_20px_rgba(236,72,153,0.6)] hover:scale-110'
           }`}
         >
-          {isLoading ? (
+          {!isVisible ? (
+            <svg className="w-4 h-4 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          ) : isLoading ? (
             <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : isPlaying ? (
             <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -136,7 +165,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
           </h3>
           <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
             <span className="w-1 h-1 bg-pink-400 rounded-full animate-pulse" />
-            {duration > 0 ? formatTime(duration) : '加载中...'}
+            {!isVisible ? '等待加载...' : duration > 0 ? formatTime(duration) : '加载中...'}
           </p>
         </div>
 
@@ -179,15 +208,18 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
         </div>
       )}
 
-      <audio
-        ref={audioRef}
-        src={src}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-        onEnded={handleEnded}
-        onError={handleError}
-        preload="metadata"
-      />
+      {/* 只有进入视口才创建 audio 元素 */}
+      {isVisible && (
+        <audio
+          ref={audioRef}
+          src={src}
+          onTimeUpdate={handleTimeUpdate}
+          onLoadedMetadata={handleLoadedMetadata}
+          onEnded={handleEnded}
+          onError={handleError}
+          preload="metadata"
+        />
+      )}
     </div>
   );
 }
