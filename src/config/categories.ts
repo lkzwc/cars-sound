@@ -10,6 +10,7 @@ export interface CategoryConfig {
 }
 
 export const CATEGORIES: CategoryConfig[] = [
+  // ======== 原始分类（上传阶段） ========
   {
     name: '公主请上车',
     slug: 'princess',
@@ -60,25 +61,71 @@ export const CATEGORIES: CategoryConfig[] = [
     description: '红警语音包下载，经典游戏音效，怀旧玩家的最爱。',
   },
   {
-    name: '王者荣耀',
-    slug: 'honor-of-kings',
-    displayName: '王者荣耀音效',
-    title: '王者荣耀音效下载 - 王者荣耀语音包 | CarSound',
-    description: '王者荣耀音效下载，击杀、五杀、胜利等经典音效，游戏玩家必备。',
-  },
-  {
     name: '大疆音效',
     slug: 'dji',
     displayName: '大疆音效',
     title: '大疆音效下载 - 无人机音效 | CarSound',
     description: '大疆音效下载，无人机经典音效，科技感十足。',
   },
+
+  // ======== reorganize-r2.ts 后的新分类 ========
   {
-    name: '复古广告合集',
+    name: '游戏音效',
+    slug: 'game-sounds',
+    displayName: '游戏音效',
+    title: '游戏音效下载 - 游戏车机音效 | CarSound',
+    description: '游戏音效下载，穿越火线、红警、超级玛丽等经典游戏音效，游戏玩家必备。',
+  },
+  {
+    name: '动画音效',
+    slug: 'cartoon-sounds',
+    displayName: '动画音效',
+    title: '动画音效下载 - 动画车机音效 | CarSound',
+    description: '动画音效下载，海绵宝宝、蜡笔小新、奥特曼等动漫音效。',
+  },
+  {
+    name: '网络热梗',
+    slug: 'memes',
+    displayName: '网络热梗音效',
+    title: '网络热梗音效下载 - 搞笑热梗音效 | CarSound',
+    description: '网络热梗音效下载，雷军、曾志伟等热门梗音效。',
+  },
+  {
+    name: '系统提示',
+    slug: 'system-prompts',
+    displayName: '系统提示音效',
+    title: '系统提示音效下载 - 欢迎语语音提示 | CarSound',
+    description: '系统提示音效下载，公主请上车、王子请上车、欢迎回家等系统提示音效。',
+  },
+  {
+    name: '生活音效',
+    slug: 'life-sounds',
+    displayName: '生活音效',
+    title: '生活音效下载 - 生活场景音效 | CarSound',
+    description: '生活音效下载，飞机高铁摩托等日常场景音效。',
+  },
+  {
+    name: '汽车品牌',
+    slug: 'car-brands',
+    displayName: '汽车品牌音效',
+    title: '汽车品牌音效下载 - 奥迪/宝马品牌音效 | CarSound',
+    description: '汽车品牌音效下载，奥迪、宝马、宾利等豪车品牌音效。',
+  },
+  {
+    name: '复古广告',
     slug: 'retro-ads',
     displayName: '复古广告音效',
     title: '复古广告音效下载 - 经典广告音效 | CarSound',
-    description: '复古广告音效下载，经典广告音效，怀旧风格。',
+    description: '复古广告音效下载，因特尔、麦当劳等经典广告音效。',
+  },
+
+  // ======== 保留的兼容分类 ========
+  {
+    name: '王者荣耀',
+    slug: 'honor-of-kings',
+    displayName: '王者荣耀音效',
+    title: '王者荣耀音效下载 - 王者荣耀语音包 | CarSound',
+    description: '王者荣耀音效下载，击杀、五杀、胜利等经典音效，游戏玩家必备。',
   },
   {
     name: '国外动画',
@@ -97,7 +144,7 @@ export const CATEGORIES: CategoryConfig[] = [
   {
     name: '游戏',
     slug: 'games',
-    displayName: '游戏音效',
+    displayName: '经典游戏音效',
     title: '游戏音效下载 - 王者荣耀/英雄联盟音效 | CarSound',
     description: '游戏音效下载，王者荣耀、英雄联盟等游戏经典音效，游戏玩家必备。',
   },

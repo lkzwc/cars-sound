@@ -2,6 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react';
 
+// 全局状态：当前正在播放的 AudioPlayer key
+let currentPlayingKey: string | null = null;
+let currentAudioEl: HTMLAudioElement | null = null;
+
 interface AudioPlayerProps {
   src: string;
   title: string;
@@ -11,6 +15,7 @@ interface AudioPlayerProps {
 export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const playerKey = `${src}-${title}`;
   const [isVisible, setIsVisible] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -38,15 +43,38 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
     return () => observer.disconnect();
   }, []);
 
+  // 当组件挂载/卸载时管理全局播放状态
+  useEffect(() => {
+    return () => {
+      if (currentPlayingKey === playerKey && currentAudioEl) {
+        currentAudioEl.pause();
+        currentAudioEl.currentTime = 0;
+        currentPlayingKey = null;
+      }
+    };
+  }, [playerKey]);
+
+  const stopAllOtherPlayers = () => {
+    if (currentAudioEl && currentPlayingKey !== playerKey) {
+      currentAudioEl.pause();
+      currentAudioEl.currentTime = 0;
+    }
+  };
+
   const togglePlay = async () => {
     if (audioRef.current) {
       try {
         if (isPlaying) {
           audioRef.current.pause();
           setIsPlaying(false);
+          currentPlayingKey = null;
         } else {
+          // 先暂停其他正在播放的音频
+          stopAllOtherPlayers();
           await audioRef.current.play();
           setIsPlaying(true);
+          currentPlayingKey = playerKey;
+          currentAudioEl = audioRef.current;
         }
       } catch (err) {
         console.error('播放失败:', err);
@@ -92,6 +120,9 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
     setIsPlaying(false);
     setProgress(0);
     setCurrentTime(0);
+    if (currentPlayingKey === playerKey) {
+      currentPlayingKey = null;
+    }
   };
 
   const handleError = () => {

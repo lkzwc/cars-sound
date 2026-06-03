@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'next/navigation';
 import AudioPlayer from '@/components/AudioPlayer';
-import { SLUG_TO_CATEGORY, CATEGORY_DISPLAY_NAMES } from '@/lib/r2';
+import CyberBackground from '@/components/CyberBackground';
+import { SLUG_TO_CATEGORY, CATEGORIES } from '@/lib/r2';
+import { getCachedCategories } from '@/lib/cache';
 
 interface AudioFile {
   key: string;
@@ -14,14 +16,28 @@ interface AudioFile {
   url: string;
 }
 
-interface Category {
-  slug: string;
-  name: string;
-  displayName: string;
-  count: number;
-}
-
 const ITEMS_PER_PAGE = 20;
+
+// 多策略解析 slug → 分类名，确保无论 R2 文件夹是什么名都能匹配
+function resolveCategoryBySlug(slug: string): { name: string; displayName: string } | null {
+  // 1. 在 CATEGORIES 配置中按 slug 查找
+  const config = CATEGORIES.find(c => c.slug === slug);
+  if (config) return { name: config.name, displayName: config.displayName };
+
+  // 2. English slug → Chinese name (如 princess → 公主请上车)
+  const chineseName = SLUG_TO_CATEGORY[slug];
+  if (chineseName) {
+    const displayName = CATEGORIES.find(c => c.name === chineseName)?.displayName || chineseName;
+    return { name: chineseName, displayName };
+  }
+
+  // 3. slug 可能就是中文分类名（如 游戏音效 → 游戏音效）
+  const byName = CATEGORIES.find(c => c.name === slug);
+  if (byName) return { name: byName.name, displayName: byName.displayName };
+
+  // 4. 完全未知的 slug — 直接用 slug 作为分类名
+  return { name: slug, displayName: slug };
+}
 
 // 骨架屏
 function SkeletonCard() {
@@ -43,24 +59,40 @@ export default function CategoryPage() {
   const params = useParams();
   const slug = params.slug as string;
   
-  // 从配置直接获取分类名，不用等 API 返回
-  const categoryName = SLUG_TO_CATEGORY[slug] || '';
-  const displayName = CATEGORY_DISPLAY_NAMES[slug] || slug;
+  // 多策略解析 slug → 分类名
+  const resolved = useMemo(() => resolveCategoryBySlug(slug), [slug]);
+  const categoryName = resolved?.name || '';
+  const displayName = resolved?.displayName || slug;
   
   const [files, setFiles] = useState<AudioFile[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+
+  // 从缓存读取全部分类（用于导航栏），不重新请求
+  const allNavCategories = useMemo(() => {
+    const cached = getCachedCategories();
+    if (cached && cached.length > 0) {
+      return cached;
+    }
+    // 缓存未命中时降级使用 CATEGORIES 配置
+    return CATEGORIES.map(c => ({
+      slug: c.slug,
+      displayName: c.displayName,
+      name: c.name,
+      count: 0,
+    }));
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setPage(1);
       try {
-        const response = await fetch('/api/audio-list');
+        const response = await fetch(`/api/audio-list?category=${encodeURIComponent(categoryName)}`);
         const data = await response.json();
         setFiles(data.files || []);
-        setCategories(data.categories || []);
+        setTotalCount(data.total || 0);
       } catch (error) {
         console.error('Failed to fetch:', error);
       } finally {
@@ -68,11 +100,12 @@ export default function CategoryPage() {
       }
     };
     
-    fetchData();
-  }, []);
+    if (categoryName) {
+      fetchData();
+    }
+  }, [categoryName]);
   
-  // 筛选当前分类的音效
-  const categoryFiles = files.filter(f => f.category === categoryName);
+  const categoryFiles = files;
   
   // 分页
   const totalPages = Math.ceil(categoryFiles.length / ITEMS_PER_PAGE);
@@ -93,26 +126,7 @@ export default function CategoryPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 relative overflow-hidden">
-      {/* 赛博朋克动态背景 */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-pink-500/30 rounded-full blur-[120px] animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/30 rounded-full blur-[120px] animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-purple-500/20 rounded-full blur-[150px]" />
-        
-        <div className="absolute top-1/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-pink-500 to-transparent opacity-60 animate-pulse" />
-        <div className="absolute top-2/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-60 animate-pulse" style={{ animationDelay: '0.3s' }} />
-        <div className="absolute top-3/4 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-60 animate-pulse" style={{ animationDelay: '0.6s' }} />
-        
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `
-            linear-gradient(rgba(236, 72, 153, 0.3) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(236, 72, 153, 0.3) 1px, transparent 1px)
-          `,
-          backgroundSize: '60px 60px',
-          transform: 'perspective(500px) rotateX(60deg)',
-          transformOrigin: 'center top'
-        }} />
-      </div>
+      <CyberBackground />
 
       <main className="max-w-7xl mx-auto px-4 py-8 relative z-10">
         {/* 分类标题 */}
@@ -127,28 +141,24 @@ export default function CategoryPage() {
             </span>
           </h1>
           <p className="text-slate-400 text-lg">
-            共 {categoryFiles.length} 个音效，适用于特斯拉、理想、蔚来、小鹏等车型
+            共 {totalCount} 个音效，适用于特斯拉、理想、蔚来、小鹏等车型
           </p>
         </div>
 
-        {/* 其他分类导航 */}
-        {!loading && categories.length > 0 && (
-          <div className="mb-8 flex flex-wrap justify-center gap-3">
-            {categories
-              .filter(c => c.slug !== slug)
-              .slice(0, 8)
-              .map((cat) => (
-                <a
-                  key={cat.name}
-                  href={`/category/${cat.slug}`}
-                  className="px-4 py-2 bg-slate-800/60 backdrop-blur text-slate-300 hover:bg-slate-700/60 border border-pink-500/20 hover:border-pink-500/40 rounded-xl font-medium transition-all duration-300 text-sm"
-                >
-                  {cat.displayName}
-                  <span className="ml-2 text-xs text-slate-500">({cat.count})</span>
-                </a>
-              ))}
-          </div>
-        )}
+        {/* 其他分类导航 - 始终显示全部分类 */}
+        <div className="mb-8 flex flex-wrap justify-center gap-3">
+          {allNavCategories
+            .filter(c => c.slug !== slug)
+            .map((cat) => (
+              <a
+                key={cat.slug}
+                href={`/category/${cat.slug}`}
+                className="px-4 py-2 bg-slate-800/60 backdrop-blur text-slate-300 hover:bg-slate-700/60 border border-pink-500/20 hover:border-pink-500/40 rounded-xl font-medium transition-all duration-300 text-sm"
+              >
+                {cat.displayName}
+              </a>
+            ))}
+        </div>
 
         {/* 音效列表 */}
         {loading ? (

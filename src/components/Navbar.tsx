@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -18,12 +16,12 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-50 h-40 flex items-center justify-center rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-120">
+            <div className="w-10 h-10 flex items-center justify-center rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-110">
               <img src="/logo.png" alt="CarSound" className="w-full h-full object-contain" />
             </div>
-            {/* <span className="text-xl font-bold text-white">
+            <span className="text-xl font-bold text-white group-hover:text-pink-400 transition-colors">
               CarSound
-            </span> */}
+            </span>
           </Link>
 
           {/* Desktop Menu */}

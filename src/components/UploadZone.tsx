@@ -1,29 +1,42 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILES = 5;
 
 interface UploadZoneProps {
   onUploadSuccess: () => void;
+}
+
+interface UploadItem {
+  name: string;
+  progress: string;
+  status: 'uploading' | 'success' | 'error';
 }
 
 export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<string | null>(null);
+  const [uploadItems, setUploadItems] = useState<UploadItem[]>([]);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  }, []);
-
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  }, []);
+  const validateFile = (file: File): string | null => {
+    if (file.size > MAX_FILE_SIZE) {
+      return `文件 ${file.name} 超过 10MB 限制`;
+    }
+    return null;
+  };
 
   const uploadFile = async (file: File) => {
-    setUploading(true);
-    setUploadProgress(`正在上传 ${file.name}...`);
+    const validationError = validateFile(file);
+    if (validationError) {
+      setUploadItems(prev => [...prev, { name: file.name, progress: `❌ ${validationError}`, status: 'error' }]);
+      return;
+    }
+
+    setUploadItems(prev => [...prev, { name: file.name, progress: '⏳ 正在上传...', status: 'uploading' }]);
 
     try {
       const formData = new FormData();
@@ -37,22 +50,30 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
       const result = await response.json();
 
       if (result.success) {
-        setUploadProgress(`✅ ${file.name} 上传成功！`);
-        setTimeout(() => {
-          setUploadProgress(null);
-          onUploadSuccess();
-        }, 1500);
+        setUploadItems(prev => prev.map(item =>
+          item.name === file.name ? { ...item, progress: `✅ ${file.name} 上传成功`, status: 'success' } : item
+        ));
       } else {
-        setUploadProgress(`❌ 上传失败: ${result.error}`);
-        setTimeout(() => setUploadProgress(null), 3000);
+        setUploadItems(prev => prev.map(item =>
+          item.name === file.name ? { ...item, progress: `❌ 上传失败: ${result.error}`, status: 'error' } : item
+        ));
       }
     } catch (error) {
-      setUploadProgress('❌ 上传失败，请重试');
-      setTimeout(() => setUploadProgress(null), 3000);
-    } finally {
-      setUploading(false);
+      setUploadItems(prev => prev.map(item =>
+        item.name === file.name ? { ...item, progress: '❌ 上传失败，请重试', status: 'error' } : item
+      ));
     }
   };
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -62,15 +83,46 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
       file.type.startsWith('audio/') || file.name.match(/\.(mp3|wav|ogg|m4a)$/i)
     );
 
+    if (files.length > MAX_FILES) {
+      setUploadProgress(`⚠️ 最多同时上传 ${MAX_FILES} 个文件`);
+      setTimeout(() => setUploadProgress(null), 3000);
+      return;
+    }
+
     if (files.length > 0) {
+      setUploading(true);
       files.forEach(uploadFile);
     }
   }, []);
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    files.forEach(uploadFile);
+    
+    if (files.length > MAX_FILES) {
+      setUploadProgress(`⚠️ 最多同时上传 ${MAX_FILES} 个文件`);
+      setTimeout(() => setUploadProgress(null), 3000);
+      return;
+    }
+
+    if (files.length > 0) {
+      setUploading(true);
+      files.forEach(uploadFile);
+    }
   };
+
+  const allDone = uploading && uploadItems.length > 0 && uploadItems.every(item => item.status !== 'uploading');
+
+  useEffect(() => {
+    if (allDone) {
+      const successCount = uploadItems.filter(i => i.status === 'success').length;
+      if (successCount > 0) {
+        setTimeout(() => {
+          setUploadItems([]);
+          onUploadSuccess();
+        }, 2000);
+      }
+    }
+  }, [allDone, uploadItems, onUploadSuccess]);
 
   return (
     <div className="relative">
@@ -88,11 +140,12 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
         }`}
       >
         <input
+          ref={fileInputRef}
           type="file"
           accept="audio/*,.mp3,.wav,.ogg,.m4a"
           multiple
           onChange={handleFileSelect}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+          className="hidden"
           disabled={uploading}
         />
         
@@ -111,7 +164,13 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
               拖拽音频文件到这里
             </p>
             <p className="text-slate-400 mt-1">
-              或 <span className="text-cyan-400 font-medium cursor-pointer hover:text-cyan-300">点击选择文件</span>
+              或{' '}
+              <span
+                className="text-cyan-400 font-medium cursor-pointer hover:text-cyan-300"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                点击选择文件
+              </span>
             </p>
           </div>
           
@@ -120,11 +179,33 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
             <span className="px-3 py-1 bg-slate-700/50 rounded-full">WAV</span>
             <span className="px-3 py-1 bg-slate-700/50 rounded-full">OGG</span>
             <span className="px-3 py-1 bg-slate-700/50 rounded-full">M4A</span>
+            <span className="px-3 py-1 bg-slate-700/50 rounded-full">最大 10MB</span>
           </div>
         </div>
       </div>
 
-      {uploadProgress && (
+      {/* 上传结果列表 */}
+      {uploadItems.length > 0 && (
+        <div className="mt-4 space-y-2">
+          {uploadItems.map((item, i) => (
+            <div
+              key={i}
+              className={`p-3 rounded-xl text-sm ${
+                item.status === 'success'
+                  ? 'bg-green-500/10 text-green-300'
+                  : item.status === 'error'
+                  ? 'bg-red-500/10 text-red-300'
+                  : 'bg-cyan-500/10 text-cyan-300'
+              }`}
+            >
+              {item.progress}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 旧进度提示（兼容） */}
+      {uploadProgress && !uploadItems.length && (
         <div className="mt-4 p-4 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 backdrop-blur border border-cyan-500/20 rounded-xl text-sm text-cyan-300 text-center">
           {uploadProgress}
         </div>

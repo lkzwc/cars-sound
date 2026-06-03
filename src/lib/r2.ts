@@ -35,7 +35,34 @@ export interface Category {
 }
 
 // 导出映射表
-export { CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES, SLUG_TO_CATEGORY };
+export { CATEGORY_SLUGS, CATEGORY_DISPLAY_NAMES, SLUG_TO_CATEGORY, CATEGORIES };
+
+// 从 R2 对象键中提取顶层文件夹（分类名）
+// 并归一化为 categories.ts 中定义的中文名称，解决 R2 文件夹名
+// 可能是英文 slug（rename-categories.ts 导致）或原始中文名的兼容问题
+function normalizeCategory(rawName: string): string {
+  // 如果已经是已知的中文分类名，直接返回
+  if (CATEGORY_SLUGS[rawName]) return rawName;
+  // 如果是已知的英文 slug，转换为中文
+  if (SLUG_TO_CATEGORY[rawName]) return SLUG_TO_CATEGORY[rawName];
+  // 未知分类名 — 保留原始值
+  return rawName;
+}
+
+function extractCategory(key: string): string | null {
+  const parts = key.split('/');
+  // 跳过非音频文件（如 README、.DS_Store 等）
+  const fileName = parts[parts.length - 1];
+  const isAudio = /\.(mp3|wav|ogg|m4a)$/i.test(fileName);
+  if (!isAudio) return null;
+  
+  // 有子文件夹 → 第一级为分类名
+  if (parts.length > 1) {
+    return parts[0];
+  }
+  // 根目录下的文件 → 归为"其他"
+  return '其他';
+}
 
 export async function listAudioFiles(bucket?: R2Bucket | null): Promise<AudioFile[]> {
   if (!bucket) {
@@ -44,34 +71,28 @@ export async function listAudioFiles(bucket?: R2Bucket | null): Promise<AudioFil
     return [];
   }
   
-  console.log('listAudioFiles: bucket found, calling list()');
-  
   try {
     const objects = await bucket.list({
       prefix: '',
     });
-    
-    console.log('listAudioFiles: found', objects.objects.length, 'objects');
     
     const files: AudioFile[] = [];
     
     for (const obj of objects.objects) {
       if (!obj.key) continue;
       
-      const ext = obj.key.toLowerCase();
-      if (!ext.endsWith('.mp3') && !ext.endsWith('.wav') && !ext.endsWith('.ogg') && !ext.endsWith('.m4a')) {
-        continue;
-      }
+      const category = extractCategory(obj.key);
+      if (!category) continue; // 跳过非音频文件
+
+      const normalized = normalizeCategory(category);
       
       const parts = obj.key.split('/');
-      const hasCategory = parts.length > 1;
-      const category = hasCategory ? parts[0] : '其他';
       const name = parts.pop() || obj.key;
       
       files.push({
         key: obj.key,
         name,
-        category,
+        category: normalized,
         size: obj.size,
         lastModified: obj.uploaded || new Date(),
         url: `/api/audio/${encodeURIComponent(obj.key)}`,
@@ -97,14 +118,35 @@ export function getCategories(files: AudioFile[]): Category[] {
     categoryMap.set(file.category, count + 1);
   });
   
-  const allCategories = CATEGORIES.map(config => ({
+  // 按配置顺序生成已配置的分类
+  const allCategories: Category[] = CATEGORIES.map(config => ({
     slug: config.slug,
     name: config.name,
     displayName: config.displayName,
     count: categoryMap.get(config.name) || 0,
   }));
   
-  return allCategories.sort((a, b) => b.count - a.count);
+  // 补充 R2 中存在但未在配置中定义的分类
+  categoryMap.forEach((count, catName) => {
+    const exists = allCategories.some(c => c.name === catName);
+    if (!exists) {
+      // 尝试查找 slug
+      const slug = CATEGORY_SLUGS[catName] || catName.toLowerCase().replace(/\s+/g, '-');
+      allCategories.push({
+        slug,
+        name: catName,
+        displayName: catName,
+        count,
+      });
+    }
+  });
+  
+  return allCategories.sort((a, b) => {
+    // "其他"排最后
+    if (a.name === '其他') return 1;
+    if (b.name === '其他') return -1;
+    return b.count - a.count;
+  });
 }
 
 export async function getAudioFile(key: string, bucket?: R2Bucket | null) {

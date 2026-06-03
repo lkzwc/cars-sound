@@ -2,12 +2,12 @@ export default function JsonLd() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "Cars Sound",
+    "name": "CarSound",
     "description": "车机魔改音效下载平台",
-    "url": "https://carssound.com",
+    "url": "https://carsound.top",
     "potentialAction": {
       "@type": "SearchAction",
-      "target": "https://carssound.com/?q={search_term_string}",
+      "target": "https://carsound.top/?q={search_term_string}",
       "query-input": "required name=search_term_string"
     }
   };
@@ -15,9 +15,9 @@ export default function JsonLd() {
   const organizationLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Cars Sound",
-    "url": "https://carssound.com",
-    "logo": "https://carssound.com/logo.png"
+    "name": "CarSound",
+    "url": "https://carsound.top",
+    "logo": "https://carsound.top/logo.png"
   };
 
   return (
