@@ -17,13 +17,10 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-110">
+          <Link href="/" className="flex items-center gap-group">
+            <div className="w-40 h-30 flex items-center justify-center rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-110">
               <img src="/logo.png" alt="CarSound" className="w-full h-full object-contain" />
             </div>
-            <span className="text-2xl font-bold text-white group-hover:text-pink-400 transition-colors">
-              CarSound
-            </span>
           </Link>
 
           {/* Desktop Menu */}
