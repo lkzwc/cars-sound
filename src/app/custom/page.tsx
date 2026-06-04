@@ -1,27 +1,33 @@
 'use client';
 
-import { useState } from 'react';
 import CyberBackground from '@/components/CyberBackground';
 
-const features = [
-  { icon: '🎙️', title: '专业配音', desc: '专业配音演员，多种音色可选，男声女声童声任选' },
-  { icon: '⚡', title: '快速交付', desc: '3-5个工作日完成定制，加急可24小时' },
-  { icon: '🚗', title: '多车型支持', desc: '特斯拉、理想、蔚来、小鹏、比亚迪等主流品牌' },
-  { icon: '🎵', title: '场景定制', desc: '锁车、解锁、迎宾、转向、加速等多种场景' },
-  { icon: '📝', title: '文案定制', desc: '自备文案或我们帮你创作，脑洞越大越好' },
-  { icon: '🔄', title: '售后无忧', desc: '免费修改直到满意，终身技术支持' },
+const toneTypes = [
+  { icon: '🎤', title: '磁性男声', desc: '低沉有磁性，适合成熟稳重的车主，如"公主请上车"经典风格', tags: ['低沉', '成熟', '稳重'] },
+  { icon: '👧', title: '甜美女声', desc: '甜美可爱，亲切温柔，适合女性车主或想给乘客温馨感', tags: ['甜美', '温柔', '亲切'] },
+  { icon: '🤖', title: '科技AI', desc: '机械感、未来感十足，贾维斯/钢铁侠风格，科技控首选', tags: ['机械', '未来', '科幻'] },
+  { icon: '🎮', title: '游戏角色', desc: '模仿热门游戏角色语音，如王者荣耀英雄、红警指挥官等', tags: ['角色', '游戏', '还原'] },
+  { icon: '😂', title: '搞笑整活', desc: '夸张搞怪风格，网络热梗配音，让你的车成为显眼包', tags: ['搞怪', '热梗', '幽默'] },
+  { icon: '🎬', title: '影视动漫', desc: '经典影视/动漫角色配音，变形金刚、奥特曼、蜡笔小新等', tags: ['动漫', '影视', '经典'] },
+];
+
+const contentTypes = [
+  { icon: '🚪', title: '锁车/解锁', desc: '锁车告别、解锁欢迎音效，最常用的场景，第一印象很重要', examples: ['公主请上车', '恭候多时'] },
+  { icon: '🏠', title: '迎宾语', desc: '上车自动播放的欢迎语音，给每天出行一个好心情', examples: ['早上好主人', '今天也要开心哦'] },
+  { icon: '🏎️', title: '驾驶提示', desc: '加速、转向、刹车等驾驶场景语音提示，个性又实用', examples: ['坐稳了！', '秋名山见'] },
+  { icon: '📢', title: '提醒播报', desc: '电量低、保养提醒、安全带未系等实用播报，有趣不枯燥', examples: ['该充电啦~', '系好安全带哟'] },
+  { icon: '🎉', title: '节日彩蛋', desc: '春节、圣诞、生日等特殊日期的惊喜语音，仪式感拉满', examples: ['新年快乐！', '生日快乐！'] },
+  { icon: '✨', title: '自定义文案', desc: '你有更好的创意？任何场景、任何文案，我们帮你实现', examples: ['我的车我做主', '无限可能'] },
 ];
 
 const steps = [
-  { step: '01', title: '沟通需求', desc: '告诉我们想要的风格、场景和文案' },
-  { step: '02', title: '确认方案', desc: '提供配音样音，选择最喜欢的音色' },
-  { step: '03', title: '开始制作', desc: '专业录音制作，品质把控' },
-  { step: '04', title: '交付安装', desc: '提供音频文件+安装教程，轻松搞定' },
+  { step: '01', title: '选择音色', desc: '浏览音色库，听样音，选择你喜欢的声线' },
+  { step: '02', title: '定制内容', desc: '确定场景和文案，自备或我们帮你创作' },
+  { step: '03', title: '专业制作', desc: '录音师录制、后期精修、品质审核' },
+  { step: '04', title: '交付安装', desc: '音频文件 + 安装教程，轻松搞定' },
 ];
 
 export default function CustomPage() {
-  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'pro'>('pro');
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#0f0f1a] via-[#13132b] to-[#0f0f1a] relative">
       <CyberBackground />
@@ -39,8 +45,87 @@ export default function CustomPage() {
             </span>
           </h1>
           <p className="text-lg text-slate-400 max-w-xl mx-auto">
-            个性化你的爱车，打造独一无二的语音体验
+            音色随心选 · 内容随心定 · 打造独一无二的车载语音体验
           </p>
+        </div>
+
+        {/* ======== 音色定制 ======== */}
+        <div className="mb-20">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-sm mb-4 backdrop-blur">
+              🎙️ 核心定制能力
+            </div>
+            <h2 className="text-3xl font-black text-white mb-3">
+              <span className="bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">
+                音色定制
+              </span>
+            </h2>
+            <p className="text-slate-400 max-w-lg mx-auto">
+              6 大音色风格，覆盖主流需求。专业配音演员录制，每种音色都提供样音试听
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {toneTypes.map((item, i) => (
+              <div
+                key={i}
+                className="group p-5 bg-[#1a1a30]/70 backdrop-blur border border-pink-500/20 rounded-xl hover:border-pink-400/50 hover:shadow-[0_0_25px_rgba(236,72,153,0.2)] transition-all duration-300"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-pink-500/10 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-white font-bold">{item.title}</h3>
+                </div>
+                <p className="text-slate-400 text-sm leading-relaxed mb-3">{item.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {item.tags.map((tag, j) => (
+                    <span key={j} className="px-2 py-0.5 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-xs">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ======== 内容定制 ======== */}
+        <div className="mb-20">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-black text-white mb-3">
+              <span className="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
+                内容定制
+              </span>
+            </h2>
+            <p className="text-slate-400 max-w-lg mx-auto">
+              6 大常用场景模板，支持文案自由创作。你出创意，我们来落地
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {contentTypes.map((item, i) => (
+              <div
+                key={i}
+                className="group p-5 bg-[#1a1a30]/70 backdrop-blur border border-purple-500/20 rounded-xl hover:border-purple-400/50 hover:shadow-[0_0_25px_rgba(168,85,247,0.2)] transition-all duration-300"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-white font-bold">{item.title}</h3>
+                </div>
+                <p className="text-slate-400 text-sm leading-relaxed mb-3">{item.desc}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {item.examples.map((ex, j) => (
+                    <span key={j} className="px-2 py-0.5 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-300 text-xs">
+                      「{ex}」
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* 定制流程 */}
@@ -64,81 +149,10 @@ export default function CustomPage() {
           </div>
         </div>
 
-        {/* 服务特色 */}
-        <div className="mb-20">
-          <h2 className="text-2xl font-bold text-white text-center mb-10">服务特色</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {features.map((item, i) => (
-              <div
-                key={i}
-                className="group p-5 bg-[#1a1a30]/70 backdrop-blur border border-pink-500/20 rounded-xl hover:border-pink-400/50 hover:shadow-[0_0_25px_rgba(236,72,153,0.2)] transition-all duration-300"
-              >
-                <div className="text-3xl mb-3">{item.icon}</div>
-                <h3 className="text-white font-bold mb-1 text-sm">{item.title}</h3>
-                <p className="text-slate-400 text-xs leading-relaxed">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* 套餐 */}
-        <div className="mb-20">
-          <h2 className="text-2xl font-bold text-white text-center mb-10">定制套餐</h2>
-          <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto">
-            {/* Basic */}
-            <button
-              onClick={() => setSelectedPlan('basic')}
-              className={`text-left p-6 rounded-2xl backdrop-blur border transition-all duration-300 ${
-                selectedPlan === 'basic'
-                  ? 'bg-[#1a1a30]/95 border-pink-400/50 shadow-[0_0_30px_rgba(236,72,153,0.25)]'
-                  : 'bg-[#1a1a30]/50 border-slate-700/50 hover:border-pink-500/30'
-              }`}
-            >
-              <h3 className="text-lg font-bold text-white mb-2">基础套餐</h3>
-              <div className="flex items-baseline gap-1 mb-4">
-                <span className="text-4xl font-black text-pink-400">¥99</span>
-                <span className="text-slate-500 text-sm">/套</span>
-              </div>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 3个场景音效</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 标准音色</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 3天交付</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 1次免费修改</li>
-              </ul>
-            </button>
-
-            {/* Pro */}
-            <button
-              onClick={() => setSelectedPlan('pro')}
-              className={`relative text-left p-6 rounded-2xl backdrop-blur border transition-all duration-300 ${
-                selectedPlan === 'pro'
-                  ? 'bg-gradient-to-br from-pink-900/30 to-purple-900/30 border-pink-500/50 shadow-[0_0_30px_rgba(236,72,153,0.3)]'
-                  : 'bg-[#1a1a30]/50 border-slate-700/50 hover:border-pink-500/30'
-              }`}
-            >
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold rounded-full">
-                🔥 推荐
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">高级套餐</h3>
-              <div className="flex items-baseline gap-1 mb-4">
-                <span className="text-4xl font-black text-pink-400">¥199</span>
-                <span className="text-slate-500 text-sm">/套</span>
-              </div>
-              <ul className="space-y-2 text-sm text-slate-400">
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 5个场景音效</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 专业配音演员</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 5天交付（可加急）</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 不限修改次数</li>
-                <li className="flex items-center gap-2"><span className="text-green-400">✓</span> 文案创作服务</li>
-              </ul>
-            </button>
-          </div>
-        </div>
-
         {/* 联系 */}
         <div id="contact" className="max-w-md mx-auto text-center">
           <h2 className="text-2xl font-bold text-white mb-4">开始定制</h2>
-          <p className="text-slate-400 text-sm mb-8">添加微信，获取专属定制服务</p>
+          <p className="text-slate-400 text-sm mb-8">告诉我们你想要的音色和内容，我们来搞定</p>
 
           <div className="p-8 bg-[#1a1a30]/80 backdrop-blur border border-pink-500/25 rounded-3xl">
             <div className="w-16 h-16 mx-auto mb-5 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_25px_rgba(236,72,153,0.3)]">
