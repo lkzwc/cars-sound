@@ -22,13 +22,11 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-12 h-12 flex items-center justify-center rounded-xl overflow-hidden bg-pink-500/5 ring-1 ring-pink-500/10 group-hover:ring-pink-500/25 transition-all duration-500 p-1.5">
-              {/* Logo 背景微光 */}
-              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <Link href="/" className="flex items-center gap-3 group hover:scale-120 transition-opacity">
+            <div className="relative w-30 h-28 flex items-center justify-center rounded-xl overflow-hidden">
               <img src="/logo.png" alt="CarSound" className="relative w-full h-full object-contain" />
             </div>
-            <span className="text-lg font-bold text-white tracking-tight">
+            <span className="relative text-xl font-bold text-white tracking-tight -ml-6">
               Car<span className="text-pink-400">Sound</span>
             </span>
           </Link>
