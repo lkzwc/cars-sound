@@ -21,6 +21,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'daily',
       priority: 1,
     },
+    // 车载音乐页
+    {
+      url: `${baseUrl}/music`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
   ];
   
   // 分类页面（使用英文slug）

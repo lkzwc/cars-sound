@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CarSound - 车机魔改音效下载 | 特斯拉锁车音效 | 公主请上车",
-  description: "CarSound车机魔改音效下载平台，提供特斯拉锁车音效、公主请上车、搞笑段子等车机自定义音效。支持特斯拉、理想、蔚来、小鹏等品牌，一键下载安装教程。",
+  title: "CarSound - 车机魔改音效下载 | 车载音乐下载 | 抖音热门歌曲",
+  description: "CarSound车机魔改音效下载平台，提供特斯拉锁车音效、公主请上车、搞笑段子等车机自定义音效，以及抖音热门歌曲、车载音乐免费下载。支持特斯拉、理想、蔚来、小鹏等品牌，一键下载安装教程。",
   keywords: [
     "特斯拉锁车音效",
     "公主请上车音效",
@@ -26,11 +26,19 @@ export const metadata: Metadata = {
     "车机音效下载",
     "搞笑锁车音效",
     "迎宾音效",
-    "解锁音效"
+    "解锁音效",
+    "抖音热门歌曲",
+    "车载歌曲下载",
+    "车载音乐下载",
+    "车载MP3下载",
+    "热门歌曲下载",
+    "无损音乐下载",
+    "DJ车载音乐",
+    "经典老歌下载",
   ],
   openGraph: {
-    title: "CarSound - 车机魔改音效下载",
-    description: "CarSound车机魔改音效下载平台，特斯拉锁车音效、公主请上车等热门音效一键下载",
+    title: "CarSound - 车机魔改音效下载 | 车载音乐下载",
+    description: "CarSound车机魔改音效下载平台，特斯拉锁车音效、公主请上车等热门音效一键下载，更有抖音热门歌曲免费下载",
     type: "website",
     locale: "zh_CN",
   },
