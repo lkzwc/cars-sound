@@ -4,18 +4,18 @@ import CyberBackground from '@/components/CyberBackground';
 
 export default function MusicPage() {
   return (
-    <div className="min-h-screen bg-[#08080d] relative">
+    <div className="min-h-screen bg-[#08080d] relative flex flex-col">
       <CyberBackground />
 
-      <div className="max-w-3xl mx-auto px-4 py-16 relative z-10">
+      <div className="max-w-3xl mx-auto px-4 py-16 relative z-10 flex-1 w-full">
         {/* Hero */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-sm mb-6 backdrop-blur">
-            <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-sm mb-6 backdrop-blur">
+            <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" />
             车载音乐U盘
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
-            <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">
               车载音乐U盘
             </span>
           </h1>
@@ -24,18 +24,18 @@ export default function MusicPage() {
 
         {/* 商品卡片 */}
         <div className="mb-16">
-          <div className="p-8 bg-white/[0.03] backdrop-blur border border-white/5 rounded-3xl hover:shadow-[0_0_30px_rgba(251,191,36,0.08)] transition-all duration-500">
+          <div className="p-8 bg-white/[0.03] backdrop-blur border border-white/5 rounded-3xl hover:shadow-[0_0_30px_rgba(236,72,153,0.08)] transition-all duration-500">
             <div className="flex flex-col md:flex-row items-center gap-8">
               {/* 产品图 */}
               <div className="shrink-0">
-                <div className="w-40 h-40 bg-amber-500/5 border border-amber-500/20 rounded-3xl flex items-center justify-center">
+                <div className="w-40 h-40 bg-pink-500/5 border border-pink-500/20 rounded-3xl flex items-center justify-center">
                   <span className="text-6xl">💿</span>
                 </div>
               </div>
 
               {/* 产品信息 */}
               <div className="flex-1 text-center md:text-left">
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-xs mb-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-xs mb-3">
                   2026新款升级 · 京东自营正版
                 </div>
                 <h2 className="text-2xl font-black text-white mb-2">影子猩球 车载U盘</h2>
@@ -50,7 +50,7 @@ export default function MusicPage() {
                     href="https://u.jd.com/71zuWat"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-amber-500 text-black font-bold rounded-full hover:shadow-[0_0_20px_rgba(251,191,36,0.3)] hover:scale-105 transition-all duration-300"
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-pink-500 text-black font-bold rounded-full hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] hover:scale-105 transition-all duration-300"
                   >
                     去京东购买
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

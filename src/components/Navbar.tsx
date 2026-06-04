@@ -2,9 +2,11 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   const menuItems = [
     { name: '首页', href: '/' },
@@ -13,33 +15,54 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#08080d]/90 backdrop-blur-xl border-b border-white/5">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0d0d18]/85 backdrop-blur-2xl border-b border-white/[0.06]">
+      {/* 顶部微光细线 */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-500/25 to-transparent" />
+      
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-group">
-            <div className="w-40 h-30 flex items-center justify-center rounded-lg overflow-hidden transition-transform duration-300 group-hover:scale-110">
-              <img src="/logo.png" alt="CarSound" className="w-full h-full object-contain" />
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="relative w-12 h-12 flex items-center justify-center rounded-xl overflow-hidden bg-pink-500/5 ring-1 ring-pink-500/10 group-hover:ring-pink-500/25 transition-all duration-500 p-1.5">
+              {/* Logo 背景微光 */}
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <img src="/logo.png" alt="CarSound" className="relative w-full h-full object-contain" />
             </div>
+            <span className="text-lg font-bold text-white tracking-tight">
+              Car<span className="text-pink-400">Sound</span>
+            </span>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-6">
-            {menuItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-slate-300 hover:text-amber-400 transition-colors duration-300 font-medium"
-              >
-                {item.name}
-              </Link>
-            ))}
+          <div className="hidden md:flex items-center gap-1">
+            {menuItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`
+                    relative px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300
+                    ${isActive
+                      ? 'text-pink-400 bg-pink-500/10'
+                      : 'text-slate-400 hover:text-pink-300 hover:bg-white/[0.04]'
+                    }
+                  `}
+                >
+                  {item.name}
+                  {/* 激活态底部指示条 */}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full" />
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 text-slate-300 hover:text-pink-400 transition-colors"
+            className="md:hidden p-2 text-slate-400 hover:text-pink-400 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               {isOpen ? (
@@ -53,17 +76,26 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-white/5">
-            {menuItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={() => setIsOpen(false)}
-                className="block py-3 text-slate-300 hover:text-pink-400 transition-colors duration-300 font-medium"
-              >
-                {item.name}
-              </Link>
-            ))}
+          <div className="md:hidden py-4 border-t border-white/[0.06] space-y-1">
+            {menuItems.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`
+                    block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300
+                    ${isActive
+                      ? 'text-pink-400 bg-pink-500/10'
+                      : 'text-slate-400 hover:text-pink-300 hover:bg-white/[0.04]'
+                    }
+                  `}
+                >
+                  {item.name}
+                </Link>
+              );
+            })}
           </div>
         )}
       </div>

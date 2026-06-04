@@ -29,18 +29,18 @@ const steps = [
 
 export default function CustomPage() {
   return (
-    <div className="min-h-screen bg-[#08080d] relative">
+    <div className="min-h-screen bg-[#08080d] relative flex flex-col">
       <CyberBackground />
 
-      <div className="max-w-5xl mx-auto px-4 py-16 relative z-10">
+      <div className="max-w-5xl mx-auto px-4 py-16 relative z-10 flex-1 w-full">
         {/* Hero */}
         <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-sm mb-6 backdrop-blur">
-            <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-sm mb-6 backdrop-blur">
+            <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" />
             专业定制服务
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
-            <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">
               专属语音包定制
             </span>
           </h1>
@@ -53,7 +53,7 @@ export default function CustomPage() {
           <div>
             <div className="mb-6">
               <h2 className="text-2xl font-black text-white mb-2">
-                <span className="text-amber-400">
+                <span className="text-pink-400">
                   🎙️ 音色定制
                 </span>
               </h2>
@@ -63,16 +63,16 @@ export default function CustomPage() {
               {toneTypes.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 p-3 bg-white/[0.03] backdrop-blur border border-white/5 rounded-xl hover:border-amber-500/25 transition-all duration-200"
+                  className="flex items-center gap-3 p-3 bg-white/[0.03] backdrop-blur border border-white/5 rounded-xl hover:border-pink-500/25 transition-all duration-200"
                 >
-                  <div className="w-10 h-10 shrink-0 rounded-lg bg-amber-500/10 flex items-center justify-center text-lg">
+                  <div className="w-10 h-10 shrink-0 rounded-lg bg-pink-500/10 flex items-center justify-center text-lg">
                     {item.icon}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-0.5">
                       <h3 className="text-white font-bold text-sm">{item.title}</h3>
                       {item.tags.map((tag, j) => (
-                        <span key={j} className="px-1.5 py-px bg-amber-500/10 border border-amber-500/20 rounded text-amber-400 text-[10px]">
+                        <span key={j} className="px-1.5 py-px bg-pink-500/10 border border-pink-500/20 rounded text-pink-400 text-[10px]">
                           {tag}
                         </span>
                       ))}
@@ -88,7 +88,7 @@ export default function CustomPage() {
           <div>
             <div className="mb-6">
               <h2 className="text-2xl font-black text-white mb-2">
-                <span className="text-amber-400">
+                <span className="text-pink-400">
                   📝 内容定制
                 </span>
               </h2>
@@ -98,9 +98,9 @@ export default function CustomPage() {
               {contentTypes.map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-3 p-3 bg-white/[0.03] backdrop-blur border border-white/5 rounded-xl hover:border-amber-500/25 transition-all duration-200"
+                  className="flex items-center gap-3 p-3 bg-white/[0.03] backdrop-blur border border-white/5 rounded-xl hover:border-pink-500/25 transition-all duration-200"
                 >
-                  <div className="w-10 h-10 shrink-0 rounded-lg bg-amber-500/10 flex items-center justify-center text-lg">
+                  <div className="w-10 h-10 shrink-0 rounded-lg bg-pink-500/10 flex items-center justify-center text-lg">
                     {item.icon}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -119,7 +119,7 @@ export default function CustomPage() {
           <div className="grid grid-cols-4 gap-3">
             {steps.map((item, i) => (
               <div key={i} className="text-center">
-                <div className="text-2xl font-black text-amber-400 mb-2">
+                <div className="text-2xl font-black text-pink-400 mb-2">
                   {item.step}
                 </div>
                 <h3 className="text-white font-bold text-sm mb-1">{item.title}</h3>
@@ -130,7 +130,7 @@ export default function CustomPage() {
           {/* 流程连线 */}
           <div className="hidden md:flex justify-center gap-12 mt-2">
             {[1, 2, 3].map(i => (
-              <div key={i} className="w-12 h-px bg-amber-500/20 mt-0" />
+              <div key={i} className="w-12 h-px bg-pink-500/20 mt-0" />
             ))}
           </div>
         </div>
@@ -147,7 +147,7 @@ export default function CustomPage() {
             <div className="text-right">
               <a
                 href="tel:15556355573"
-                className="text-2xl font-black text-amber-400 tracking-wide hover:scale-105 transition-transform inline-block"
+                className="text-2xl font-black text-pink-400 tracking-wide hover:scale-105 transition-transform inline-block"
               >
                 15556355573
               </a>

@@ -127,7 +127,7 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
   return (
     <div className="relative">
       {/* 背景光效 */}
-      <div className="absolute inset-0 bg-amber-500/5 rounded-3xl blur-xl" />
+      <div className="absolute inset-0 bg-pink-500/5 rounded-3xl blur-xl" />
       
       <div
         onDragOver={handleDragOver}
@@ -135,8 +135,8 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
         onDrop={handleDrop}
         className={`relative border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 backdrop-blur-xl ${
           isDragging
-            ? 'border-amber-400 bg-amber-500/5 scale-105'
-            : 'border-white/5 bg-white/[0.02] hover:border-amber-500/20 hover:bg-white/[0.04]'
+            ? 'border-pink-400 bg-pink-500/5 scale-105'
+            : 'border-white/5 bg-white/[0.02] hover:border-pink-500/20 hover:bg-white/[0.04]'
         }`}
       >
         <input
@@ -151,8 +151,8 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
         
         <div className="space-y-4">
           <div className="relative w-20 h-20 mx-auto">
-            <div className="absolute inset-0 bg-amber-500 rounded-2xl opacity-10 animate-pulse" />
-            <div className="relative w-full h-full bg-amber-500 rounded-2xl flex items-center justify-center shadow-xl shadow-amber-500/10">
+            <div className="absolute inset-0 bg-pink-500 rounded-2xl opacity-10 animate-pulse" />
+            <div className="relative w-full h-full bg-pink-500 rounded-2xl flex items-center justify-center shadow-xl shadow-pink-500/10">
               <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
               </svg>
@@ -166,7 +166,7 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
             <p className="text-slate-400 mt-1">
               或{' '}
               <span
-                className="text-amber-400 font-medium cursor-pointer hover:text-amber-300"
+                className="text-pink-400 font-medium cursor-pointer hover:text-pink-300"
                 onClick={() => fileInputRef.current?.click()}
               >
                 点击选择文件
@@ -195,7 +195,7 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
                   ? 'bg-green-500/10 text-green-300'
                   : item.status === 'error'
                   ? 'bg-red-500/10 text-red-300'
-                  : 'bg-amber-500/10 text-amber-300'
+                  : 'bg-pink-500/10 text-pink-300'
               }`}
             >
               {item.progress}
@@ -206,7 +206,7 @@ export default function UploadZone({ onUploadSuccess }: UploadZoneProps) {
 
       {/* 旧进度提示（兼容） */}
       {uploadProgress && !uploadItems.length && (
-        <div className="mt-4 p-4 bg-amber-500/5 backdrop-blur border border-amber-500/20 rounded-xl text-sm text-amber-300 text-center">
+        <div className="mt-4 p-4 bg-pink-500/5 backdrop-blur border border-pink-500/20 rounded-xl text-sm text-pink-300 text-center">
           {uploadProgress}
         </div>
       )}

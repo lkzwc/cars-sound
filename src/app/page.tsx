@@ -125,15 +125,15 @@ export default function Home() {
   return (
     <>
       <JsonLd />
-      <div className="min-h-screen bg-[#08080d] relative">
+      <div className="min-h-screen bg-[#08080d] relative flex flex-col">
         <CyberBackground />
 
-        <main className="max-w-5xl mx-auto px-4 py-6 relative z-10">
+        <main className="max-w-5xl mx-auto px-4 py-6 relative z-10 flex-1 w-full">
           {/* 头部 */}
           <div className="text-center mb-6">
             <h1 className="text-3xl md:text-4xl font-black text-white mb-2">
-              <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
-                CarSound
+              <span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">
+                为您的爱车定制专属音效
               </span>
             </h1>
             <p className="text-slate-400 text-sm">
@@ -156,7 +156,7 @@ export default function Home() {
                     onClick={() => setActiveSlug(cat.slug)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
                       activeSlug === cat.slug
-                        ? 'bg-amber-500 text-black font-semibold shadow-[0_0_15px_rgba(251,191,36,0.3)]'
+                        ? 'bg-pink-500 text-black font-semibold shadow-[0_0_15px_rgba(236,72,153,0.3)]'
                         : 'bg-white/[0.03] text-slate-300 hover:text-white hover:bg-white/[0.06] border border-white/5'
                     }`}
                   >
@@ -197,7 +197,7 @@ export default function Home() {
                   <div className="mt-6 text-center">
                     <button
                       onClick={loadMore}
-                      className="px-8 py-2.5 bg-white/[0.03] text-slate-300 rounded-full border border-white/5 hover:border-amber-500/30 hover:text-white transition-all duration-300 text-sm"
+                      className="px-8 py-2.5 bg-white/[0.03] text-slate-300 rounded-full border border-white/5 hover:border-pink-500/30 hover:text-white transition-all duration-300 text-sm"
                     >
                       加载更多 ({files.length - paginatedFiles.length} 个)
                     </button>
