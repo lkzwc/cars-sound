@@ -13,7 +13,7 @@ const playlists = [
 
 export default function MusicPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-cyan-950 relative">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f0f1a] via-[#13132b] to-[#0f0f1a] relative">
       <CyberBackground />
 
       <div className="max-w-5xl mx-auto px-4 py-16 relative z-10">
@@ -39,13 +39,13 @@ export default function MusicPage() {
             {playlists.map((item, i) => (
               <div
                 key={i}
-                className="group p-5 bg-slate-800/40 backdrop-blur border border-cyan-500/10 rounded-xl hover:border-cyan-500/30 hover:shadow-[0_0_25px_rgba(6,182,212,0.15)] transition-all duration-300 cursor-pointer"
+                className="group p-5 bg-[#1a1a30]/70 backdrop-blur border border-cyan-500/20 rounded-xl hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.25)] transition-all duration-300 cursor-pointer"
               >
                 <div className={`w-12 h-12 mb-4 bg-gradient-to-br ${item.color} rounded-xl flex items-center justify-center text-2xl shadow-lg opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300`}>
                   {item.cover}
                 </div>
                 <h3 className="text-white font-bold mb-1 group-hover:text-cyan-400 transition-colors text-sm">{item.title}</h3>
-                <p className="text-slate-500 text-xs mb-3 leading-relaxed">{item.desc}</p>
+                <p className="text-slate-400 text-xs mb-3 leading-relaxed">{item.desc}</p>
                 <div className="flex items-center gap-1.5 text-cyan-400 text-xs font-medium">
                   <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
                   {item.songs} 首歌曲
@@ -57,9 +57,9 @@ export default function MusicPage() {
 
         {/* 说明 */}
         <div className="max-w-2xl mx-auto mb-20">
-          <div className="p-6 bg-slate-800/40 backdrop-blur border border-cyan-500/10 rounded-2xl text-center">
+          <div className="p-6 bg-[#1a1a30]/70 backdrop-blur border border-cyan-500/20 rounded-2xl text-center">
             <h3 className="text-white font-bold mb-3 text-lg">🎧 更多歌单即将上线</h3>
-            <p className="text-slate-500 text-sm">
+            <p className="text-slate-400 text-sm">
               我们正在精选更多优质歌单，覆盖不同驾驶场景和心情。
               如果你有好的歌单推荐，欢迎联系我们！
             </p>
@@ -71,19 +71,19 @@ export default function MusicPage() {
           <h2 className="text-2xl font-bold text-white mb-4">定制专属歌单</h2>
           <p className="text-slate-400 text-sm mb-8">添加微信，获取更多精选歌单推荐</p>
 
-          <div className="p-8 bg-slate-800/60 backdrop-blur border border-cyan-500/20 rounded-3xl">
+          <div className="p-8 bg-[#1a1a30]/80 backdrop-blur border border-cyan-500/25 rounded-3xl">
             <div className="w-16 h-16 mx-auto mb-5 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_25px_rgba(6,182,212,0.3)]">
               📱
             </div>
-            <div className="text-slate-500 text-xs mb-1">微信号</div>
+            <div className="text-slate-400 text-xs mb-1">微信号</div>
             <div className="text-3xl font-black text-cyan-400 mb-3 tracking-wider">15556355573</div>
-            <p className="text-slate-600 text-xs">添加时请备注「车载音乐」</p>
+            <p className="text-slate-500 text-xs">添加时请备注「车载音乐」</p>
           </div>
         </div>
       </div>
 
       <footer className="relative z-10 text-center py-8 border-t border-cyan-500/20 mt-8">
-        <p className="text-slate-600 text-xs">&copy; 2026 CarSound. All rights reserved.</p>
+        <p className="text-slate-500 text-xs">&copy; 2026 CarSound. All rights reserved.</p>
       </footer>
     </div>
   );

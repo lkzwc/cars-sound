@@ -29,7 +29,7 @@ function SkeletonTabs() {
   return (
     <div className="flex gap-2 overflow-hidden">
       {[...Array(6)].map((_, i) => (
-        <div key={i} className="flex-shrink-0 h-10 w-24 bg-slate-800/60 rounded-full animate-pulse" />
+        <div key={i} className="flex-shrink-0 h-10 w-24 bg-[#1a1a30]/80 rounded-full animate-pulse" />
       ))}
     </div>
   );
@@ -40,7 +40,7 @@ function SkeletonList() {
   return (
     <div className="space-y-3">
       {[...Array(5)].map((_, i) => (
-        <div key={i} className="h-20 bg-slate-800/40 rounded-xl animate-pulse" />
+        <div key={i} className="h-20 bg-[#1a1a30]/60 rounded-xl animate-pulse" />
       ))}
     </div>
   );
@@ -125,7 +125,7 @@ export default function Home() {
   return (
     <>
       <JsonLd />
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 relative">
+      <div className="min-h-screen bg-gradient-to-b from-[#0f0f1a] via-[#13132b] to-[#0f0f1a] relative">
         <CyberBackground />
 
         <main className="max-w-5xl mx-auto px-4 py-6 relative z-10">
@@ -136,7 +136,7 @@ export default function Home() {
                 CarSound
               </span>
             </h1>
-            <p className="text-slate-500 text-sm">
+            <p className="text-slate-400 text-sm">
               {totalFiles} 个音效 · {categories.length} 个分类
             </p>
           </div>
@@ -157,11 +157,11 @@ export default function Home() {
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
                       activeSlug === cat.slug
                         ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.4)]'
-                        : 'bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-700/60 border border-slate-700/50'
+                        : 'bg-[#1a1a30]/80 text-slate-300 hover:text-white hover:bg-[#1e1e38]/90 border border-slate-700/40'
                     }`}
                   >
                     {cat.displayName}
-                    <span className={`ml-1.5 text-xs ${activeSlug === cat.slug ? 'text-white/70' : 'text-slate-500'}`}>
+                    <span className={`ml-1.5 text-xs ${activeSlug === cat.slug ? 'text-white/70' : 'text-slate-400'}`}>
                       {cat.count}
                     </span>
                   </button>
@@ -179,7 +179,7 @@ export default function Home() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-bold text-white">
                     {activeCategory.displayName}
-                    <span className="text-sm text-slate-500 font-normal ml-2">
+                    <span className="text-sm text-slate-400 font-normal ml-2">
                       共 {files.length} 个
                     </span>
                   </h2>
@@ -197,7 +197,7 @@ export default function Home() {
                   <div className="mt-6 text-center">
                     <button
                       onClick={loadMore}
-                      className="px-8 py-2.5 bg-slate-800/80 text-slate-300 rounded-full border border-pink-500/30 hover:border-cyan-500/50 hover:text-white hover:shadow-[0_0_20px_rgba(236,72,153,0.3)] transition-all duration-300 text-sm"
+                      className="px-8 py-2.5 bg-[#1a1a30]/90 text-slate-300 rounded-full border border-pink-500/30 hover:border-cyan-400/50 hover:text-white hover:shadow-[0_0_25px_rgba(236,72,153,0.4)] transition-all duration-300 text-sm"
                     >
                       加载更多 ({files.length - paginatedFiles.length} 个)
                     </button>
@@ -221,8 +221,8 @@ export default function Home() {
             </div>
             <span className="text-lg font-bold text-white">CarSound</span>
           </div>
-          <p className="text-slate-500 text-sm">音频来源于网络，仅供娱乐</p>
-          <p className="text-slate-600 text-xs mt-1">&copy; 2026 CarSound. All rights reserved.</p>
+          <p className="text-slate-400 text-sm">音频来源于网络，仅供娱乐</p>
+          <p className="text-slate-500 text-xs mt-1">&copy; 2026 CarSound. All rights reserved.</p>
         </footer>
       </div>
     </>

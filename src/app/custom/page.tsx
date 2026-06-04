@@ -23,7 +23,7 @@ export default function CustomPage() {
   const [selectedPlan, setSelectedPlan] = useState<'basic' | 'pro'>('pro');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-purple-950 relative">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f0f1a] via-[#13132b] to-[#0f0f1a] relative">
       <CyberBackground />
 
       <div className="max-w-5xl mx-auto px-4 py-16 relative z-10">
@@ -49,12 +49,12 @@ export default function CustomPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {steps.map((item, i) => (
               <div key={i} className="relative group">
-                <div className="p-5 bg-slate-800/40 backdrop-blur border border-pink-500/10 rounded-xl hover:border-pink-500/30 transition-all duration-300 text-center">
+                <div className="p-5 bg-[#1a1a30]/70 backdrop-blur border border-pink-500/20 rounded-xl hover:border-pink-400/50 hover:shadow-[0_0_25px_rgba(236,72,153,0.2)] transition-all duration-300 text-center">
                   <div className="text-3xl font-black bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent mb-3">
                     {item.step}
                   </div>
                   <h3 className="text-white font-bold mb-1">{item.title}</h3>
-                  <p className="text-slate-500 text-xs">{item.desc}</p>
+                  <p className="text-slate-400 text-xs">{item.desc}</p>
                 </div>
                 {i < steps.length - 1 && (
                   <div className="hidden md:block absolute top-1/2 -right-2 w-4 text-pink-500/40 text-xl transform -translate-y-1/2">→</div>
@@ -71,11 +71,11 @@ export default function CustomPage() {
             {features.map((item, i) => (
               <div
                 key={i}
-                className="group p-5 bg-slate-800/40 backdrop-blur border border-pink-500/10 rounded-xl hover:border-pink-500/30 hover:shadow-[0_0_25px_rgba(236,72,153,0.15)] transition-all duration-300"
+                className="group p-5 bg-[#1a1a30]/70 backdrop-blur border border-pink-500/20 rounded-xl hover:border-pink-400/50 hover:shadow-[0_0_25px_rgba(236,72,153,0.2)] transition-all duration-300"
               >
                 <div className="text-3xl mb-3">{item.icon}</div>
                 <h3 className="text-white font-bold mb-1 text-sm">{item.title}</h3>
-                <p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p>
+                <p className="text-slate-400 text-xs leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -90,8 +90,8 @@ export default function CustomPage() {
               onClick={() => setSelectedPlan('basic')}
               className={`text-left p-6 rounded-2xl backdrop-blur border transition-all duration-300 ${
                 selectedPlan === 'basic'
-                  ? 'bg-slate-800/80 border-pink-500/40 shadow-[0_0_30px_rgba(236,72,153,0.2)]'
-                  : 'bg-slate-800/30 border-slate-700/50 hover:border-pink-500/20'
+                  ? 'bg-[#1a1a30]/95 border-pink-400/50 shadow-[0_0_30px_rgba(236,72,153,0.25)]'
+                  : 'bg-[#1a1a30]/50 border-slate-700/50 hover:border-pink-500/30'
               }`}
             >
               <h3 className="text-lg font-bold text-white mb-2">基础套餐</h3>
@@ -113,7 +113,7 @@ export default function CustomPage() {
               className={`relative text-left p-6 rounded-2xl backdrop-blur border transition-all duration-300 ${
                 selectedPlan === 'pro'
                   ? 'bg-gradient-to-br from-pink-900/30 to-purple-900/30 border-pink-500/50 shadow-[0_0_30px_rgba(236,72,153,0.3)]'
-                  : 'bg-slate-800/30 border-slate-700/50 hover:border-pink-500/20'
+                  : 'bg-[#1a1a30]/50 border-slate-700/50 hover:border-pink-500/30'
               }`}
             >
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold rounded-full">
@@ -140,19 +140,19 @@ export default function CustomPage() {
           <h2 className="text-2xl font-bold text-white mb-4">开始定制</h2>
           <p className="text-slate-400 text-sm mb-8">添加微信，获取专属定制服务</p>
 
-          <div className="p-8 bg-slate-800/60 backdrop-blur border border-pink-500/20 rounded-3xl">
+          <div className="p-8 bg-[#1a1a30]/80 backdrop-blur border border-pink-500/25 rounded-3xl">
             <div className="w-16 h-16 mx-auto mb-5 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_25px_rgba(236,72,153,0.3)]">
               📱
             </div>
-            <div className="text-slate-500 text-xs mb-1">微信号</div>
+            <div className="text-slate-400 text-xs mb-1">微信号</div>
             <div className="text-3xl font-black text-pink-400 mb-3 tracking-wider">15556355573</div>
-            <p className="text-slate-600 text-xs">添加时请备注「语音包定制」</p>
+            <p className="text-slate-500 text-xs">添加时请备注「语音包定制」</p>
           </div>
         </div>
       </div>
 
       <footer className="relative z-10 text-center py-8 border-t border-pink-500/20 mt-8">
-        <p className="text-slate-600 text-xs">&copy; 2026 CarSound. All rights reserved.</p>
+        <p className="text-slate-500 text-xs">&copy; 2026 CarSound. All rights reserved.</p>
       </footer>
     </div>
   );

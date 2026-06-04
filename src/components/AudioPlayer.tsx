@@ -151,7 +151,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   return (
     <div 
       ref={containerRef}
-      className="group relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-xl rounded-xl border border-pink-500/20 p-3 hover:border-cyan-500/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.3)] transition-all duration-300 overflow-hidden"
+      className="group relative bg-gradient-to-br from-[#1a1a30]/95 to-[#13132b]/95 backdrop-blur-xl rounded-xl border border-pink-500/25 p-3 hover:border-cyan-400/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.35)] transition-all duration-300 overflow-hidden"
     >
       {/* 霓虹光效 */}
       <div className="absolute inset-0 bg-gradient-to-br from-pink-500/0 via-cyan-500/0 to-purple-500/0 group-hover:from-pink-500/10 group-hover:via-cyan-500/5 group-hover:to-purple-500/10 transition-all duration-500" />
@@ -194,7 +194,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
           <h3 className="font-medium text-white truncate text-sm group-hover:text-cyan-300 transition-colors" title={title}>
             {title}
           </h3>
-          <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-1.5">
+          <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
             <span className="w-1 h-1 bg-pink-400 rounded-full animate-pulse" />
             {!isVisible ? '等待加载...' : duration > 0 ? formatTime(duration) : '加载中...'}
           </p>
@@ -203,7 +203,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
         {/* 下载按钮 */}
         <button
           onClick={handleDownload}
-          className="p-1.5 text-slate-500 hover:text-pink-400 hover:bg-pink-500/10 rounded-lg transition-all duration-200 group/btn"
+          className="p-1.5 text-slate-400 hover:text-pink-400 hover:bg-pink-500/10 rounded-lg transition-all duration-200 group/btn"
           title="下载音频"
         >
           <svg className="w-4 h-4 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -227,7 +227,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
         </div>
         
         {/* 时间显示 */}
-        <div className="flex justify-between text-xs text-slate-500 mt-1.5">
+        <div className="flex justify-between text-xs text-slate-400 mt-1.5">
           <span>{formatTime(currentTime)}</span>
           <span>{formatTime(duration)}</span>
         </div>
