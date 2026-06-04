@@ -118,29 +118,18 @@ export function getCategories(files: AudioFile[]): Category[] {
     categoryMap.set(file.category, count + 1);
   });
   
-  // 直接从 R2 数据派生分类，config 只做美化映射
+  // 直接从 R2 数据派生分类，config 只提供 URL slug
   const allCategories: Category[] = [];
   
   categoryMap.forEach((count, catName) => {
     const config = CATEGORIES.find(c => c.name === catName);
-    if (config) {
-      // 匹配到配置 → 使用配置的 slug 和 displayName
-      allCategories.push({
-        slug: config.slug,
-        name: config.name,
-        displayName: config.displayName,
-        count,
-      });
-    } else {
-      // R2 中有但配置未定义 → 自动生成
-      const slug = CATEGORY_SLUGS[catName] || pinyinSlug(catName);
-      allCategories.push({
-        slug,
-        name: catName,
-        displayName: catName,
-        count,
-      });
-    }
+    const slug = config?.slug || CATEGORY_SLUGS[catName] || pinyinSlug(catName);
+    allCategories.push({
+      slug,
+      name: catName,
+      displayName: catName,
+      count,
+    });
   });
   
   return allCategories.sort((a, b) => {
