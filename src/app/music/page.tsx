@@ -44,12 +44,8 @@ export default function MusicPage() {
                   兼容市面上主流车型，让每一段旅途都有好音乐相伴。
                 </p>
 
-                {/* 价格 + 按钮 */}
+                {/* 按钮 */}
                 <div className="flex flex-col sm:flex-row items-center gap-4">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-slate-400 text-sm">到手价</span>
-                    <span className="text-4xl font-black text-cyan-400">¥63.10</span>
-                  </div>
                   <a
                     href="https://u.jd.com/71zuWat"
                     target="_blank"

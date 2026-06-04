@@ -136,28 +136,19 @@ export default function CustomPage() {
         </div>
 
         {/* 联系 */}
-        <div id="contact" className="max-w-lg mx-auto">
-          <div className="p-8 bg-[#1a1a30]/80 backdrop-blur border border-pink-500/25 rounded-3xl text-center">
-            <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-pink-500 to-purple-600 rounded-2xl flex items-center justify-center text-3xl shadow-[0_0_25px_rgba(236,72,153,0.3)]">
-              💬
-            </div>
-            <h3 className="text-xl font-bold text-white mb-2">开启你的专属定制</h3>
-            <p className="text-slate-400 text-sm mb-6">
-              扫码或搜索添加微信，告诉我们你想要的效果
-            </p>
-
-            {/* 微信卡片 */}
-            <div className="inline-flex items-center gap-3 px-5 py-3 bg-[#13132b] border border-pink-500/20 rounded-xl">
-              <svg className="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18zm3.833 2.368c-3.546 0-6.407 2.613-6.407 5.843 0 1.987 1.07 3.755 2.728 4.874a.735.735 0 01.29.614l-.056.706a.21.21 0 00.287.204l2.076-1.058a.942.942 0 01.682-.052c.398.113.834.168 1.293.168 3.547 0 6.407-2.613 6.407-5.843 0-3.23-2.86-5.843-6.407-5.843zm-2.553 3.37c.432 0 .781.357.781.797a.789.789 0 01-.781.796.789.789 0 01-.78-.796c0-.44.35-.797.78-.797zm5.303 0c.432 0 .78.357.78.797a.789.789 0 01-.78.796.789.789 0 01-.781-.796c0-.44.349-.797.78-.797z"/>
-              </svg>
-              <div className="text-left">
-                <div className="text-slate-400 text-[10px]">微信扫码或搜索</div>
-                <div className="text-white font-bold text-lg tracking-wide">15556355573</div>
-              </div>
-            </div>
-
-            <p className="text-slate-500 text-xs mt-4">添加时备注「语音包定制」，第一时间回复你</p>
+        <div id="contact" className="max-w-xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-center gap-4 p-5 bg-[#1a1a30]/80 backdrop-blur border border-pink-500/25 rounded-2xl">
+            <span className="text-white font-bold text-sm shrink-0">开启专属定制</span>
+            <svg className="w-5 h-5 text-green-400 shrink-0 hidden sm:block" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18z"/>
+            </svg>
+            <a
+              href="tel:15556355573"
+              className="text-xl font-black bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent tracking-wide hover:scale-105 transition-transform"
+            >
+              15556355573
+            </a>
+            <span className="text-slate-500 text-xs">微信电话同号</span>
           </div>
         </div>
       </div>
