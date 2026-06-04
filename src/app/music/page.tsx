@@ -81,21 +81,6 @@ export default function MusicPage() {
           ))}
         </div>
 
-        {/* 底部 CTA */}
-        <div className="text-center">
-          <a
-            href="https://u.jd.com/71zuWat"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-lg rounded-full hover:shadow-[0_0_40px_rgba(6,182,212,0.6)] hover:scale-105 transition-all duration-300"
-          >
-            🛒 立即购买
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-          <p className="text-slate-500 text-xs mt-3">* 商品价格及库存以京东商城页面为准</p>
-        </div>
       </div>
 
       <footer className="relative z-10 text-center py-8 border-t border-cyan-500/20 mt-8">

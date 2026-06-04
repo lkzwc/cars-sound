@@ -137,18 +137,22 @@ export default function CustomPage() {
 
         {/* 联系 */}
         <div id="contact" className="max-w-xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-center gap-4 p-5 bg-[#1a1a30]/80 backdrop-blur border border-pink-500/25 rounded-2xl">
-            <span className="text-white font-bold text-sm shrink-0">开启专属定制</span>
-            <svg className="w-5 h-5 text-green-400 shrink-0 hidden sm:block" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18z"/>
-            </svg>
-            <a
-              href="tel:15556355573"
-              className="text-xl font-black bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent tracking-wide hover:scale-105 transition-transform"
-            >
-              15556355573
-            </a>
-            <span className="text-slate-500 text-xs">微信电话同号</span>
+          <div className="flex items-center justify-between gap-6 p-6 bg-[#1a1a30]/80 backdrop-blur border border-pink-500/25 rounded-2xl">
+            <div className="flex items-center gap-3">
+              <svg className="w-6 h-6 text-green-400 shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 01.213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 00.167-.054l1.903-1.114a.864.864 0 01.717-.098 10.16 10.16 0 002.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178A1.17 1.17 0 014.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 01-1.162 1.178 1.17 1.17 0 01-1.162-1.178c0-.651.52-1.18 1.162-1.18z"/>
+              </svg>
+              <span className="text-white font-bold text-base">开启专属定制</span>
+            </div>
+            <div className="text-right">
+              <a
+                href="tel:15556355573"
+                className="text-2xl font-black bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent tracking-wide hover:scale-105 transition-transform inline-block"
+              >
+                15556355573
+              </a>
+              <p className="text-slate-500 text-xs mt-0.5">微信电话同号</p>
+            </div>
           </div>
         </div>
       </div>
