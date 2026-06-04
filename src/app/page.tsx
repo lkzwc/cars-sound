@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import AudioPlayer from '@/components/AudioPlayer';
 import CyberBackground from '@/components/CyberBackground';
 import JsonLd from '@/components/JsonLd';
@@ -54,7 +54,6 @@ export default function Home() {
   const [loadingFiles, setLoadingFiles] = useState(false);
   const [page, setPage] = useState(1);
   const [totalFiles, setTotalFiles] = useState(0);
-  const tabsRef = useRef<HTMLDivElement>(null);
 
   // 首次加载：获取全部分类
   useEffect(() => {
@@ -123,15 +122,6 @@ export default function Home() {
     setPage(p => p + 1);
   }, []);
 
-  // 滚动 active tab 到可见区域
-  useEffect(() => {
-    if (!activeSlug || !tabsRef.current) return;
-    const activeBtn = tabsRef.current.querySelector(`[data-slug="${activeSlug}"]`);
-    if (activeBtn) {
-      activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-  }, [activeSlug]);
-
   return (
     <>
       <JsonLd />
@@ -157,16 +147,14 @@ export default function Home() {
               <SkeletonTabs />
             ) : (
               <div
-                ref={tabsRef}
-                className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide"
-                style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+                className="flex flex-wrap gap-2"
               >
                 {categories.map(cat => (
                   <button
                     key={cat.slug}
                     data-slug={cat.slug}
                     onClick={() => setActiveSlug(cat.slug)}
-                    className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
                       activeSlug === cat.slug
                         ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.4)]'
                         : 'bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-700/60 border border-slate-700/50'
