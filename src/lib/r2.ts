@@ -118,20 +118,22 @@ export function getCategories(files: AudioFile[]): Category[] {
     categoryMap.set(file.category, count + 1);
   });
   
-  // 按配置顺序生成已配置的分类
-  const allCategories: Category[] = CATEGORIES.map(config => ({
-    slug: config.slug,
-    name: config.name,
-    displayName: config.displayName,
-    count: categoryMap.get(config.name) || 0,
-  }));
+  // 直接从 R2 数据派生分类，config 只做美化映射
+  const allCategories: Category[] = [];
   
-  // 补充 R2 中存在但未在配置中定义的分类
   categoryMap.forEach((count, catName) => {
-    const exists = allCategories.some(c => c.name === catName);
-    if (!exists) {
-      // 尝试查找 slug
-      const slug = CATEGORY_SLUGS[catName] || catName.toLowerCase().replace(/\s+/g, '-');
+    const config = CATEGORIES.find(c => c.name === catName);
+    if (config) {
+      // 匹配到配置 → 使用配置的 slug 和 displayName
+      allCategories.push({
+        slug: config.slug,
+        name: config.name,
+        displayName: config.displayName,
+        count,
+      });
+    } else {
+      // R2 中有但配置未定义 → 自动生成
+      const slug = CATEGORY_SLUGS[catName] || pinyinSlug(catName);
       allCategories.push({
         slug,
         name: catName,
@@ -147,6 +149,14 @@ export function getCategories(files: AudioFile[]): Category[] {
     if (b.name === '其他') return -1;
     return b.count - a.count;
   });
+}
+
+// 简单的中文转拼音 slug（用于 R2 中未知的中文分类名）
+function pinyinSlug(name: string): string {
+  return name
+    .replace(/[^\u4e00-\u9fa5a-zA-Z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .toLowerCase() || 'unknown';
 }
 
 export async function getAudioFile(key: string, bucket?: R2Bucket | null) {
