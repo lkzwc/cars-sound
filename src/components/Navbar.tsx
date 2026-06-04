@@ -13,7 +13,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0f0f1a]/90 backdrop-blur-xl border-b border-pink-500/10">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#08080d]/90 backdrop-blur-xl border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
@@ -29,7 +29,7 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-slate-300 hover:text-pink-400 transition-colors duration-300 font-medium"
+                className="text-slate-300 hover:text-amber-400 transition-colors duration-300 font-medium"
               >
                 {item.name}
               </Link>
@@ -53,7 +53,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden py-4 border-t border-pink-500/20">
+          <div className="md:hidden py-4 border-t border-white/5">
             {menuItems.map((item) => (
               <Link
                 key={item.name}

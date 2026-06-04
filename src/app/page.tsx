@@ -29,7 +29,7 @@ function SkeletonTabs() {
   return (
     <div className="flex gap-2 overflow-hidden">
       {[...Array(6)].map((_, i) => (
-        <div key={i} className="flex-shrink-0 h-10 w-24 bg-[#1a1a30]/80 rounded-full animate-pulse" />
+        <div key={i} className="flex-shrink-0 h-10 w-24 bg-white/[0.03] rounded-full animate-pulse" />
       ))}
     </div>
   );
@@ -40,7 +40,7 @@ function SkeletonList() {
   return (
     <div className="space-y-3">
       {[...Array(5)].map((_, i) => (
-        <div key={i} className="h-20 bg-[#1a1a30]/60 rounded-xl animate-pulse" />
+        <div key={i} className="h-20 bg-white/[0.02] rounded-xl animate-pulse" />
       ))}
     </div>
   );
@@ -125,14 +125,14 @@ export default function Home() {
   return (
     <>
       <JsonLd />
-      <div className="min-h-screen bg-gradient-to-b from-[#0f0f1a] via-[#13132b] to-[#0f0f1a] relative">
+      <div className="min-h-screen bg-[#08080d] relative">
         <CyberBackground />
 
         <main className="max-w-5xl mx-auto px-4 py-6 relative z-10">
           {/* 头部 */}
           <div className="text-center mb-6">
             <h1 className="text-3xl md:text-4xl font-black text-white mb-2">
-              <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
                 CarSound
               </span>
             </h1>
@@ -156,12 +156,12 @@ export default function Home() {
                     onClick={() => setActiveSlug(cat.slug)}
                     className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap ${
                       activeSlug === cat.slug
-                        ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-[0_0_20px_rgba(236,72,153,0.4)]'
-                        : 'bg-[#1a1a30]/80 text-slate-300 hover:text-white hover:bg-[#1e1e38]/90 border border-slate-700/40'
+                        ? 'bg-amber-500 text-black font-semibold shadow-[0_0_15px_rgba(251,191,36,0.3)]'
+                        : 'bg-white/[0.03] text-slate-300 hover:text-white hover:bg-white/[0.06] border border-white/5'
                     }`}
                   >
                     {cat.displayName}
-                    <span className={`ml-1.5 text-xs ${activeSlug === cat.slug ? 'text-white/70' : 'text-slate-400'}`}>
+                    <span className={`ml-1.5 text-xs ${activeSlug === cat.slug ? 'text-black/60' : 'text-slate-400'}`}>
                       {cat.count}
                     </span>
                   </button>
@@ -197,7 +197,7 @@ export default function Home() {
                   <div className="mt-6 text-center">
                     <button
                       onClick={loadMore}
-                      className="px-8 py-2.5 bg-[#1a1a30]/90 text-slate-300 rounded-full border border-pink-500/30 hover:border-cyan-400/50 hover:text-white hover:shadow-[0_0_25px_rgba(236,72,153,0.4)] transition-all duration-300 text-sm"
+                      className="px-8 py-2.5 bg-white/[0.03] text-slate-300 rounded-full border border-white/5 hover:border-amber-500/30 hover:text-white transition-all duration-300 text-sm"
                     >
                       加载更多 ({files.length - paginatedFiles.length} 个)
                     </button>
@@ -214,7 +214,7 @@ export default function Home() {
         </main>
 
         {/* Footer */}
-        <footer className="relative z-10 text-center py-8 border-t border-pink-500/20 mt-8">
+        <footer className="relative z-10 text-center py-8 border-t border-white/5 mt-8">
           <div className="flex items-center justify-center gap-2 mb-2">
             <div className="w-8 h-8 flex items-center justify-center rounded-lg overflow-hidden">
               <img src="/logo.png" alt="CarSound" className="w-full h-full object-contain" />

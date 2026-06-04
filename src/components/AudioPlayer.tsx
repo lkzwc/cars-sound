@@ -151,11 +151,11 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
   return (
     <div 
       ref={containerRef}
-      className="group relative bg-gradient-to-br from-[#1a1a30]/95 to-[#13132b]/95 backdrop-blur-xl rounded-xl border border-pink-500/25 p-3 hover:border-cyan-400/50 hover:shadow-[0_0_30px_rgba(236,72,153,0.35)] transition-all duration-300 overflow-hidden"
+      className="group relative bg-white/[0.03] backdrop-blur-xl rounded-xl border border-white/5 p-3 hover:border-amber-500/25 hover:shadow-[0_0_20px_rgba(251,191,36,0.08)] transition-all duration-300 overflow-hidden"
     >
-      {/* 霓虹光效 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-pink-500/0 via-cyan-500/0 to-purple-500/0 group-hover:from-pink-500/10 group-hover:via-cyan-500/5 group-hover:to-purple-500/10 transition-all duration-500" />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-500/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      {/* 微光效 */}
+      <div className="absolute inset-0 bg-amber-500/0 group-hover:bg-amber-500/[0.03] transition-all duration-500" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       
       {/* 播放按钮和标题 */}
       <div className="relative flex items-center gap-3 mb-3">
@@ -165,7 +165,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
           className={`relative w-11 h-11 flex-shrink-0 flex items-center justify-center rounded-full text-white transition-all duration-300 ${
             error || !isVisible
               ? 'bg-slate-700/50 cursor-not-allowed' 
-              : 'bg-gradient-to-br from-pink-500 via-purple-500 to-cyan-500 hover:shadow-[0_0_20px_rgba(236,72,153,0.6)] hover:scale-110'
+              : 'bg-amber-500 hover:shadow-[0_0_15px_rgba(251,191,36,0.3)] hover:scale-110'
           }`}
         >
           {!isVisible ? (
@@ -184,18 +184,18 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
             </svg>
           )}
           {isPlaying && (
-            <div className="absolute inset-0 rounded-full bg-pink-400/30 animate-ping" />
+            <div className="absolute inset-0 rounded-full bg-amber-400/20 animate-ping" />
           )}
-          {/* 霓虹环 */}
-          <div className="absolute inset-0 rounded-full border-2 border-pink-400/50 opacity-0 group-hover:opacity-100 transition-opacity animate-pulse" />
+          {/* 光环 */}
+          <div className="absolute inset-0 rounded-full border border-amber-400/30 opacity-0 group-hover:opacity-100 transition-opacity" />
         </button>
 
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-white truncate text-sm group-hover:text-cyan-300 transition-colors" title={title}>
+          <h3 className="font-medium text-white truncate text-sm group-hover:text-amber-400 transition-colors" title={title}>
             {title}
           </h3>
           <p className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
-            <span className="w-1 h-1 bg-pink-400 rounded-full animate-pulse" />
+            <span className="w-1 h-1 bg-amber-400 rounded-full animate-pulse" />
             {!isVisible ? '等待加载...' : duration > 0 ? formatTime(duration) : '加载中...'}
           </p>
         </div>
@@ -203,7 +203,7 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
         {/* 下载按钮 */}
         <button
           onClick={handleDownload}
-          className="p-1.5 text-slate-400 hover:text-pink-400 hover:bg-pink-500/10 rounded-lg transition-all duration-200 group/btn"
+          className="p-1.5 text-slate-400 hover:text-amber-400 hover:bg-amber-500/10 rounded-lg transition-all duration-200 group/btn"
           title="下载音频"
         >
           <svg className="w-4 h-4 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,10 +219,10 @@ export default function AudioPlayer({ src, title }: AudioPlayerProps) {
           onClick={handleSeek}
         >
           <div
-            className="h-full bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 rounded-full transition-all duration-100 relative"
+            className="h-full bg-amber-500 rounded-full transition-all duration-100 relative"
             style={{ width: `${progress}%` }}
           >
-            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_10px_rgba(236,72,153,0.8)] opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2.5 h-2.5 bg-white rounded-full shadow-[0_0_8px_rgba(251,191,36,0.5)] opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
         </div>
         

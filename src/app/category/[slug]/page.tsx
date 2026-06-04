@@ -42,12 +42,12 @@ function resolveCategoryBySlug(slug: string): { name: string; displayName: strin
 // 骨架屏
 function SkeletonCard() {
   return (
-    <div className="p-3 bg-slate-800/40 backdrop-blur border border-pink-500/20 rounded-xl animate-pulse">
+    <div className="p-3 bg-white/[0.02] backdrop-blur border border-white/5 rounded-xl animate-pulse">
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-11 h-11 bg-slate-700/50 rounded-full"></div>
+        <div className="w-11 h-11 bg-white/[0.05] rounded-full"></div>
         <div className="flex-1">
-          <div className="h-4 bg-slate-700/50 rounded w-3/4 mb-2"></div>
-          <div className="h-3 bg-slate-700/50 rounded w-1/2"></div>
+          <div className="h-4 bg-white/[0.05] rounded w-3/4 mb-2"></div>
+          <div className="h-3 bg-white/[0.05] rounded w-1/2"></div>
         </div>
       </div>
       <div className="h-1.5 bg-slate-700/50 rounded-full"></div>
@@ -114,29 +114,29 @@ export default function CategoryPage() {
 
   if (!loading && !categoryName) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#08080d] flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl mb-4">🔍</div>
           <h1 className="text-2xl text-white mb-4">分类不存在</h1>
-          <a href="/" className="text-pink-400 hover:text-pink-300">返回首页</a>
+          <a href="/" className="text-amber-400 hover:text-amber-300">返回首页</a>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 relative overflow-hidden">
+    <div className="min-h-screen bg-[#08080d] relative overflow-hidden">
       <CyberBackground />
 
       <main className="max-w-7xl mx-auto px-4 py-8 relative z-10">
         {/* 分类标题 */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-sm mb-4">
-            <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full text-amber-400 text-sm mb-4">
+            <span className="w-2 h-2 bg-amber-400 rounded-full animate-pulse" />
             分类音效
           </div>
           <h1 className="text-4xl md:text-5xl font-black text-white mb-4">
-            <span className="bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">
               {displayName || '加载中...'}
             </span>
           </h1>
@@ -153,7 +153,7 @@ export default function CategoryPage() {
               <a
                 key={cat.slug}
                 href={`/category/${cat.slug}`}
-                className="px-4 py-2 bg-slate-800/60 backdrop-blur text-slate-300 hover:bg-slate-700/60 border border-pink-500/20 hover:border-pink-500/40 rounded-xl font-medium transition-all duration-300 text-sm"
+                className="px-4 py-2 bg-white/[0.03] backdrop-blur text-slate-300 hover:bg-white/[0.06] border border-white/5 hover:border-amber-500/30 rounded-xl font-medium transition-all duration-300 text-sm"
               >
                 {cat.displayName}
               </a>
@@ -189,7 +189,7 @@ export default function CategoryPage() {
               <div className="text-center mt-8">
                 <button
                   onClick={() => setPage(p => p + 1)}
-                  className="px-8 py-3 bg-slate-800/60 backdrop-blur border border-pink-500/20 text-slate-300 hover:bg-slate-700/60 hover:border-pink-500/40 rounded-xl font-medium transition-all duration-300"
+                  className="px-8 py-3 bg-white/[0.03] backdrop-blur border border-white/5 text-slate-300 hover:bg-white/[0.06] hover:border-amber-500/30 rounded-xl font-medium transition-all duration-300"
                 >
                   加载更多 ({categoryFiles.length - page * ITEMS_PER_PAGE} 个剩余)
                 </button>
@@ -203,13 +203,13 @@ export default function CategoryPage() {
           <div className="text-center py-32">
             <div className="text-6xl mb-4">🎵</div>
             <p className="text-slate-400 text-lg">该分类暂无音效</p>
-            <a href="/" className="inline-block mt-4 text-pink-400 hover:text-pink-300">返回首页</a>
+            <a href="/" className="inline-block mt-4 text-amber-400 hover:text-amber-300">返回首页</a>
           </div>
         )}
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 text-center py-12 border-t border-pink-500/20 mt-12">
+      <footer className="relative z-10 text-center py-12 border-t border-white/5 mt-12">
         <div className="flex items-center justify-center gap-3 mb-3">
           <a href="/" className="flex items-center gap-3">
             <div className="w-12 h-12 flex items-center justify-center rounded-lg overflow-hidden">
