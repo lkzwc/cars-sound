@@ -177,7 +177,13 @@ export default function MusicPage() {
           </div>
           <span className="text-lg font-bold text-white">CarSound</span>
         </div>
-        <p className="text-slate-400 text-sm">音频来源于网络，仅供娱乐</p>
+        <p className="text-slate-400 text-sm mb-3">音频来源于网络，仅供娱乐</p>
+        <div className="flex justify-center gap-4 mb-3">
+          <a href="/about" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">关于我们</a>
+          <a href="/privacy" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">隐私政策</a>
+          <a href="/terms" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">使用条款</a>
+          <a href="/contact" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">联系我们</a>
+        </div>
         <p className="text-slate-500 text-xs mt-1">&copy; 2026 CarSound. All rights reserved.</p>
       </footer>
     </div>

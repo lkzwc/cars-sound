@@ -158,6 +158,12 @@ export default function CustomPage() {
       </div>
 
       <footer className="relative z-10 text-center py-8 border-t border-white/5 mt-8">
+        <div className="flex justify-center gap-4 mb-3">
+          <a href="/about" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">关于我们</a>
+          <a href="/privacy" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">隐私政策</a>
+          <a href="/terms" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">使用条款</a>
+          <a href="/contact" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">联系我们</a>
+        </div>
         <p className="text-slate-500 text-xs">&copy; 2026 CarSound. All rights reserved.</p>
       </footer>
     </div>

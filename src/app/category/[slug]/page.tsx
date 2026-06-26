@@ -18,6 +18,34 @@ interface AudioFile {
 
 const ITEMS_PER_PAGE = 20;
 
+// 根据分类名生成描述文字
+function getCategoryDescription(displayName: string): string {
+  const descriptions: Record<string, string> = {
+    '公主请上车': '火爆全网的"公主请上车"系列音效，让你的爱车在解锁时响起温柔的公主欢迎音，仪式感拉满。包含多种变体版本，适配不同场景使用。',
+    '公主请下车': '下车也要有仪式感！"公主请下车"系列音效，温柔提醒乘客安全下车，让每一次到达都充满温馨。',
+    '王子请上车': '男车主专属！"王子请上车"系列锁车迎宾音效，帅气又有范，给你不一样的驾驶仪式感。',
+    '变形金刚': '大黄蜂、擎天柱等变形金刚经典角色语音包，解锁/锁车时唤起童年回忆，机械变形音效燃爆全场。',
+    '贾维斯/钢铁侠': '钢铁侠战甲AI贾维斯风格语音包，科幻范十足。让你的特斯拉变身托尼·斯塔克的专属座驾。',
+    '邪恶摇粒绒': '网络热梗"邪恶摇粒绒"音效合集，搞笑又魔性，最适合喜欢玩梗的车主。',
+    '蛋仔派对': '蛋仔派对游戏经典音效与角色语音，可爱又欢乐，适合年轻车主和蛋仔爱好者。',
+    '红警语音包': '红色警戒经典语音包，命令与征服风格提示音，怀旧游戏玩家的最爱。',
+    '王者荣耀': '王者荣耀英雄语音与经典音效，游戏玩家专属，让爱车充满王者气息。',
+    '国内动画': '国产经典动画音效与角色语音，喜羊羊、熊出没等国漫IP，回忆童年经典。',
+    '国外动画': '海外经典动画音效合集，迪士尼、漫威、日漫等角色语音，国际范十足。',
+    '角色语音包': '各类热门角色语音定制包，涵盖影视、动漫、游戏等多元IP角色，一人一音效。',
+    '大疆音效': '大疆无人机风格音效，科技感十足，适合喜欢数码和无人机的车主。',
+    '奥迪/宝马': '奥迪、宝马等豪华品牌风格音效，让每一辆车都能感受德系豪华的声音质感。',
+    '复古广告': '经典广告词和复古音效，怀旧风格满满，让你的锁车音效别具一格。',
+    '网络热梗': '紧跟网络热点，收录最新最火的网络热梗音效，让你的爱车走在潮流前线。',
+    '游戏音效': '经典游戏音效大合集，涵盖FC红白机、街机、3A大作等游戏提示音和背景音效。',
+    '系统提示': '各类科技感系统提示音效，仿手机、电脑操作系统风格，简洁利落适合商务车主。',
+    '生活音效': '日常生活中的趣味音效，门铃声、动物叫声、自然声音等，贴近生活的个性化选择。',
+    '搞笑/段子': '搞笑段子和幽默音效合集，让你的锁车音效成为街头最靓的风景线。',
+    '精选音效': '综合精选的高品质车机音效，涵盖多种风格和使用场景，适合初次接触车机自定义音效的用户。',
+  };
+  return descriptions[displayName] || `${displayName}系列车机音效，精选高品质音频文件，适用于特斯拉、理想、蔚来、小鹏等车型的车机自定义提示音设置。在线试听，免费下载，让你的爱车与众不同。`;
+}
+
 // 多策略解析 slug → 分类名，确保无论 R2 文件夹是什么名都能匹配
 function resolveCategoryBySlug(slug: string): { name: string; displayName: string } | null {
   // 1. 在 CATEGORIES 配置中按 slug 查找
@@ -146,6 +174,17 @@ export default function CategoryPage() {
         </div>
 
         {/* 其他分类导航 - 始终显示全部分类 */}
+        {/* 分类介绍 */}
+        <div className="mb-10 max-w-2xl mx-auto text-center">
+          <div className="p-6 bg-white/[0.02] border border-white/[0.04] rounded-2xl">
+            <h2 className="text-white font-bold mb-2">{displayName}音效有什么？</h2>
+            <p className="text-slate-400 text-sm leading-relaxed">
+              {getCategoryDescription(displayName)}
+            </p>
+          </div>
+        </div>
+
+        {/* 其他分类导航 - 始终显示全部分类 */}
         <div className="mb-8 flex flex-wrap justify-center gap-3">
           {allNavCategories
             .filter(c => c.slug !== slug)
@@ -218,7 +257,13 @@ export default function CategoryPage() {
             <span className="text-xl font-bold text-white">CarSound</span>
           </a>
         </div>
-        <p className="text-slate-500 text-sm">音频来源于网络，仅供娱乐</p>
+        <p className="text-slate-400 text-sm mb-3">音频来源于网络，仅供娱乐</p>
+        <div className="flex justify-center gap-4 mb-3">
+          <a href="/about" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">关于我们</a>
+          <a href="/privacy" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">隐私政策</a>
+          <a href="/terms" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">使用条款</a>
+          <a href="/contact" className="text-slate-500 hover:text-pink-400 transition-colors text-xs">联系我们</a>
+        </div>
         <p className="text-slate-600 text-xs mt-2">© 2026 CarSound. All rights reserved.</p>
       </footer>
     </div>
