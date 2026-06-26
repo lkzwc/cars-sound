@@ -128,7 +128,7 @@ export default function Home() {
       <div className="min-h-screen bg-[#08080d] relative flex flex-col">
         <CyberBackground />
 
-        <main className="max-w-5xl mx-auto px-4 py-6 relative z-10 flex-1 w-full">
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10 flex-1 w-full">
           {/* 头部 */}
           <div className="text-center mb-6">
             <h1 className="text-3xl md:text-4xl font-black text-white mb-2">
@@ -213,7 +213,7 @@ export default function Home() {
           </div>        </main>
 
           {/* ====== 使用教程 ====== */}
-          <section className="mt-16 max-w-5xl mx-auto px-4 relative z-10 w-full">
+          <section className="mt-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
             <div className="text-center mb-8">
               <h2 className="text-2xl md:text-3xl font-black text-white mb-2">
                 如何<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">使用</span>？

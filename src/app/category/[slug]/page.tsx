@@ -156,7 +156,7 @@ export default function CategoryPage() {
     <div className="min-h-screen bg-[#08080d] relative overflow-hidden flex flex-col">
       <CyberBackground />
 
-      <main className="max-w-7xl mx-auto px-4 py-8 relative z-10 flex-1 w-full">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10 flex-1 w-full">
         {/* 分类标题 */}
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-sm mb-4">

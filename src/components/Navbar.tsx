@@ -19,7 +19,7 @@ export default function Navbar() {
       {/* 顶部微光细线 */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-pink-500/25 to-transparent" />
       
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group hover:scale-120 transition-opacity">

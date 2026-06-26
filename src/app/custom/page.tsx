@@ -32,7 +32,7 @@ export default function CustomPage() {
     <div className="min-h-screen bg-[#08080d] relative flex flex-col">
       <CyberBackground />
 
-      <div className="max-w-5xl mx-auto px-4 py-16 relative z-10 flex-1 w-full">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10 flex-1 w-full">
         {/* Hero */}
         <div className="text-center mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-pink-500/10 border border-pink-500/20 rounded-full text-pink-400 text-sm mb-6 backdrop-blur">
